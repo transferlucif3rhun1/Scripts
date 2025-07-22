@@ -1,0 +1,37 @@
+jadx-1.5.2/jadx-1.5.2.zip filter=lfs diff=lfs merge=lfs -text
+exness.exe[[:space:]]incapsula-reese84/test/reese84.exe[[:space:]]jadx-1.5.2/jadx-1.5.2.zip[[:space:]]prod-server.zip[[:space:]]server.exe[[:space:]]ticketmaster-nds/app.exe[[:space:]]ticketmaster-nds/app.obfuscated.exe filter=lfs diff=lfs merge=lfs -text
+tls_helper/dist/pkg/tls-proxy-server.exe filter=lfs diff=lfs merge=lfs -text
+Eporner/temp/6b4e9813629f40d53da7cd91c83b2fc9768ef011.mp4 filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+*.avi filter=lfs diff=lfs merge=lfs -text
+*.mkv filter=lfs diff=lfs merge=lfs -text
+*.iso filter=lfs diff=lfs merge=lfs -text
+*.dmg filter=lfs diff=lfs merge=lfs -text
+*.pkg filter=lfs diff=lfs merge=lfs -text
+*.exe filter=lfs diff=lfs merge=lfs -text
+*.msi filter=lfs diff=lfs merge=lfs -text
+*.bin filter=lfs diff=lfs merge=lfs -text
+*.deb filter=lfs diff=lfs merge=lfs -text
+*.rpm filter=lfs diff=lfs merge=lfs -text
+*.tar.gz filter=lfs diff=lfs merge=lfs -text
+*.tar.bz2 filter=lfs diff=lfs merge=lfs -text
+*.7z filter=lfs diff=lfs merge=lfs -text
+*.rar filter=lfs diff=lfs merge=lfs -text
+*.woff filter=lfs diff=lfs merge=lfs -text
+*.woff2 filter=lfs diff=lfs merge=lfs -text
+*.ttf filter=lfs diff=lfs merge=lfs -text
+*.otf filter=lfs diff=lfs merge=lfs -text
+jadx-1.5.2/lib/jadx-1.5.2-all.jar filter=lfs diff=lfs merge=lfs -text
+exness.exe filter=lfs diff=lfs merge=lfs -text
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+incapsula-reese84/test/reese84.exe filter=lfs diff=lfs merge=lfs -text
+prod-server.zip filter=lfs diff=lfs merge=lfs -text
+server.exe filter=lfs diff=lfs merge=lfs -text
+ticketmaster-nds/app.exe filter=lfs diff=lfs merge=lfs -text
+ticketmaster-nds/app.obfuscated.exe filter=lfs diff=lfs merge=lfs -text
+Akamai[[:space:]]BMP[[:space:]]Generator[[:space:]]Main/server/db/devices.json filter=lfs diff=lfs merge=lfs -text
