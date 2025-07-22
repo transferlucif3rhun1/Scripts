@@ -1,0 +1,350 @@
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"math/rand"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/gorilla/mux"
+)
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
+type Header struct {
+	Key   string
+	Value string
+}
+
+type RequestPayload struct {
+	UA    string `json:"ua"`
+	Proxy string `json:"proxy,omitempty"`
+	Times int    `json:"times,omitempty"`
+}
+
+type HeadersResponse struct {
+	Headers        string `json:"headers"`
+	Proxy          string `json:"proxy,omitempty"`
+	RepeatedString string `json:"repeatedString,omitempty"`
+}
+
+func main() {
+	router := mux.NewRouter()
+	router.HandleFunc("/generateHeaders/{Type}", handleRequest).Methods("POST")
+	router.HandleFunc("/auth", authHandler).Methods("POST")
+
+	server := &http.Server{
+		Handler:      router,
+		Addr:         "0.0.0.0:8050",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+		IdleTimeout:  30 * time.Second,
+	}
+
+	log.Println("Server has started on port 8050")
+	log.Fatal(server.ListenAndServe())
+}
+
+func handleRequest(w http.ResponseWriter, r *http.Request) {
+	var payload RequestPayload
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		http.Error(w, "Error parsing JSON request", http.StatusBadRequest)
+		return
+	}
+
+	if payload.UA == "" {
+		http.Error(w, "Missing required field 'ua'", http.StatusBadRequest)
+		return
+	}
+
+	headerType := mux.Vars(r)["Type"]
+	headers := generateHeaders(payload.UA, headerType)
+	headersJSON, err := json.Marshal(headers)
+	if err != nil {
+		http.Error(w, "Error encoding headers to JSON", http.StatusInternalServerError)
+		return
+	}
+
+	response := HeadersResponse{Headers: string(headersJSON)}
+	if payload.Proxy != "" {
+		response.Proxy = formatIpAddress(payload.Proxy)
+	}
+	if payload.Times > 0 {
+		response.RepeatedString = strings.Repeat("-", 1024*payload.Times)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "Error encoding JSON response", http.StatusInternalServerError)
+	}
+
+	log.Printf("Handled request for type: %s, UA: %s", headerType, payload.UA)
+}
+
+func authHandler(w http.ResponseWriter, r *http.Request) {
+	var request struct {
+		IP    string `json:"ip"`
+		Proxy string `json:"proxy"`
+		User  string `json:"user"`
+		Pass  string `json:"pass"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	if request.IP == "" || request.Proxy == "" || request.User == "" || request.Pass == "" {
+		http.Error(w, "Missing required fields 'ip', 'proxy', 'user', and/or 'pass'", http.StatusBadRequest)
+		return
+	}
+
+	headers := generateHeaders("Mozilla/5.0", "Login")
+	headersMap := make(map[string]string)
+	for k, v := range headers {
+		headersMap[k] = v
+	}
+
+	proxyAddress := formatIpAddress(request.Proxy)
+
+	payload := map[string]interface{}{
+		"tlsClientIdentifier":            "chrome_117",
+		"followRedirects":                true,
+		"insecureSkipVerify":             false,
+		"withoutCookieJar":               false,
+		"withDefaultCookieJar":           true,
+		"isByteRequest":                  false,
+		"forceHttp1":                     false,
+		"withRandomTLSExtensionOrder":    true,
+		"timeoutSeconds":                 30,
+		"timeoutMilliseconds":            0,
+		"sessionId":                      nil,
+		"proxyUrl":                       fmt.Sprintf("http://%s", proxyAddress),
+		"certificatePinningHosts":        map[string]interface{}{},
+		"headers":                        headersMap,
+		"requestUrl":                     "https://auth.ticketmaster.com/json/sign-in/.ico",
+		"requestMethod":                  "POST",
+		"requestBody":                    fmt.Sprintf(`{"email":"%s","password":"%s","rememberMe":true,"externalUserToken":null}`, request.User, request.Pass),
+		"requestCookies":                 []interface{}{},
+	}
+
+	payloadBytes, err := json.Marshal(payload)
+	if err != nil {
+		http.Error(w, "Failed to create request payload", http.StatusInternalServerError)
+		return
+	}
+
+	apiURL := fmt.Sprintf("http://%s:8080/api/forward", request.IP)
+	req, err := http.NewRequest("POST", apiURL, bytes.NewBuffer(payloadBytes))
+	if err != nil {
+		http.Error(w, "Failed to create request", http.StatusInternalServerError)
+		return
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("x-api-key", "my-auth-key-1")
+
+	client := &http.Client{Timeout: 30 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		http.Error(w, "Failed to make request", http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		http.Error(w, "Failed to read response", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(body)
+}
+
+func generateHeaders(ua, headerType string) map[string]string {
+	typeSpecificHeaders := map[string]map[string]string{
+		"Login": {
+			"tm-integrator-id":    "prd1741.iccp",
+			"tm-oauth-type":       "tm-auth",
+			"tm-placement-id":     "mytmlogin",
+			"sec-ch-ua":           `"Not/A)Brand";v="8", "Chromium";v="126", "Brave";v="126"`,
+			"dnt":                 "1",
+			"accept-language":     "en-us",
+			"sec-ch-ua-mobile":    "?0",
+			"user-agent":          ua,
+			"content-type":        "application/json",
+			"tm-site-token":       "tm-us",
+			"tm-client-id":        "8bf7204a7e97.web.ticketmaster.us",
+			"nds-pmd":             "",
+			"sec-ch-ua-platform":  `"macOS"`,
+			"accept":              "*/*",
+			"sec-gpc":             "1",
+			"origin":              "https://auth.ticketmaster.com",
+			"sec-fetch-site":      "same-origin",
+			"sec-fetch-mode":      "cors",
+			"sec-fetch-dest":      "empty",
+			"referer":             "https://auth.ticketmaster.com/as/authorization.oauth2?client_id=8bf7204a7e97.web.ticketmaster.us&response_type=code&scope=openid%20profile%20phone%20email%20tm&redirect_uri=https://identity.ticketmaster.com/exchange&visualPresets=tm&lang=en-us&placementId=mytmlogin&hideLeftPanel=false&integratorId=prd1741.iccp&intSiteToken=tm-us",
+			"accept-encoding":     "gzip, deflate, br, zstd",
+		},
+		"Code": {
+			"Host":                    "identity.ticketmaster.com",
+			"Connection":              "keep-alive",
+			"sec-ch-ua":               `"Not/A)Brand";v="8", "Chromium";v="126", "Brave";v="126"`,
+			"sec-ch-ua-mobile":        "?0",
+			"sec-ch-ua-platform":      `"macOS"`,
+			"Upgrade-Insecure-Requests": "1",
+			"DNT":                     "1",
+			"User-Agent":              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+			"Accept":                  "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+			"Sec-GPC":                 "1",
+			"Accept-Language":         "en-GB,en;q=0.6",
+			"Sec-Fetch-Site":          "same-site",
+			"Sec-Fetch-Mode":          "navigate",
+			"Sec-Fetch-User":          "?1",
+			"Sec-Fetch-Dest":          "document",
+			"Referer":                 "https://auth.ticketmaster.com/",
+			"Accept-Encoding":         "gzip, deflate, br, zstd",
+		},
+		"BindPhone": {
+			"content-length":     "65",
+			"tm-integrator-id":   "prd1741.iccp",
+			"tm-oauth-type":      "tm-auth",
+			"tm-placement-id":    "mytmlogin",
+			"sec-ch-ua":          `"Not/A)Brand";v="8", "Chromium";v="126", "Brave";v="126"`,
+			"dnt":                "1",
+			"accept-language":    "en-us",
+			"sec-ch-ua-mobile":   "?0",
+			"user-agent":         ua,
+			"content-type":       "application/json",
+			"tm-site-token":      "tm-us",
+			"tm-client-id":       "8bf7204a7e97.web.ticketmaster.us",
+			"nds-pmd":            "",
+			"sec-ch-ua-platform": `"macOS"`,
+			"accept":             "*/*",
+			"sec-gpc":            "1",
+			"origin":             "https://auth.ticketmaster.com",
+			"sec-fetch-site":     "same-origin",
+			"sec-fetch-mode":     "cors",
+			"sec-fetch-dest":     "empty",
+			"referer":            "https://auth.ticketmaster.com/as/authorization.oauth2?client_id=8bf7204a7e97.web.ticketmaster.us&response_type=code&scope=openid+profile+phone+email+tm&redirect_uri=https%3A%2F%2Fidentity.ticketmaster.com%2Fexchange&visualPresets=tm&lang=en-us&placementId=mytmlogin&hideLeftPanel=true&integratorId=prd1741.iccp&state=authenticatedUser&policySelector=requireEditPhone",
+			"accept-encoding":    "gzip, deflate, br, zstd",
+		},
+		"BindPhoneOTP": {
+			"content-length":     "2",
+			"tm-integrator-id":   "prd1741.iccp",
+			"tm-oauth-type":      "tm-auth",
+			"tm-placement-id":    "mytmlogin",
+			"sec-ch-ua":          `"Not/A)Brand";v="8", "Chromium";v="126", "Brave";v="126"`,
+			"dnt":                "1",
+			"accept-language":    "en-us",
+			"sec-ch-ua-mobile":   "?0",
+			"user-agent":         ua,
+			"content-type":       "application/json",
+			"tm-site-token":      "tm-us",
+			"tm-client-id":       "8bf7204a7e97.web.ticketmaster.us",
+			"nds-pmd":            "",
+			"sec-ch-ua-platform": `"macOS"`,
+			"accept":             "*/*",
+			"sec-gpc":            "1",
+			"origin":             "https://auth.ticketmaster.com",
+			"sec-fetch-site":     "same-origin",
+			"sec-fetch-mode":     "cors",
+			"sec-fetch-dest":     "empty",
+			"referer":            "https://auth.ticketmaster.com/as/authorization.oauth2?client_id=8bf7204a7e97.web.ticketmaster.us&response_type=code&scope=openid+profile+phone+email+tm&redirect_uri=https%3A%2F%2Fidentity.ticketmaster.com%2Fexchange&visualPresets=tm&lang=en-us&placementId=mytmlogin&hideLeftPanel=true&integratorId=prd1741.iccp&state=authenticatedUser&policySelector=requireEditPhone",
+			"accept-encoding":    "gzip, deflate, br, zstd",
+		},
+		"BindPhoneOTPPost": {
+			"content-length":     "28",
+			"tm-integrator-id":   "prd1741.iccp",
+			"tm-oauth-type":      "tm-auth",
+			"tm-placement-id":    "mytmlogin",
+			"sec-ch-ua":          `"Not/A)Brand";v="8", "Chromium";v="126", "Brave";v="126"`,
+			"dnt":                "1",
+			"accept-language":    "en-us",
+			"sec-ch-ua-mobile":   "?0",
+			"user-agent":         ua,
+			"content-type":       "application/json",
+			"tm-site-token":      "tm-us",
+			"tm-client-id":       "8bf7204a7e97.web.ticketmaster.us",
+			"nds-pmd":            "",
+			"sec-ch-ua-platform": `"macOS"`,
+			"accept":             "*/*",
+			"sec-gpc":            "1",
+			"origin":             "https://auth.ticketmaster.com",
+			"sec-fetch-site":     "same-origin",
+			"sec-fetch-mode":     "cors",
+			"sec-fetch-dest":     "empty",
+			"referer":            "https://auth.ticketmaster.com/as/authorization.oauth2?client_id=8bf7204a7e97.web.ticketmaster.us&response_type=code&scope=openid+profile+phone+email+tm&redirect_uri=https%3A%2F%2Fidentity.ticketmaster.com%2Fexchange&visualPresets=tm&lang=en-us&placementId=mytmlogin&hideLeftPanel=true&integratorId=prd1741.iccp&state=authenticatedUser&policySelector=requireEditPhone",
+			"accept-encoding":    "gzip, deflate, br, zstd",
+		},
+		"BindPhoneFinal": {
+			"content-length":     "99",
+			"tm-integrator-id":   "prd1741.iccp",
+			"tm-oauth-type":      "tm-auth",
+			"tm-placement-id":    "mytmlogin",
+			"sec-ch-ua":          `"Not/A)Brand";v="8", "Chromium";v="126", "Brave";v="126"`,
+			"dnt":                "1",
+			"accept-language":    "en-us",
+			"sec-ch-ua-mobile":   "?0",
+			"user-agent":         ua,
+			"content-type":       "application/json",
+			"tm-site-token":      "tm-us",
+			"tm-client-id":       "8bf7204a7e97.web.ticketmaster.us",
+			"nds-pmd":            "",
+			"sec-ch-ua-platform": `"macOS"`,
+			"accept":             "*/*",
+			"sec-gpc":            "1",
+			"origin":             "https://auth.ticketmaster.com",
+			"sec-fetch-site":     "same-origin",
+			"sec-fetch-mode":     "cors",
+			"sec-fetch-dest":     "empty",
+			"referer":            "https://auth.ticketmaster.com/as/authorization.oauth2?client_id=8bf7204a7e97.web.ticketmaster.us&response_type=code&scope=openid+profile+phone+email+tm&redirect_uri=https%3A%2F%2Fidentity.ticketmaster.com%2Fexchange&visualPresets=tm&lang=en-us&placementId=mytmlogin&hideLeftPanel=true&integratorId=prd1741.iccp&state=authenticatedUser&policySelector=requireEditPhone",
+			"accept-encoding":    "gzip, deflate, br, zstd",
+		},
+	}
+
+	headers := make(map[string]string)
+	if specificHeaders, ok := typeSpecificHeaders[headerType]; ok {
+		for k, v := range specificHeaders {
+			headers[k] = v
+		}
+	}
+
+	return headers
+}
+
+func formatIpAddress(input string) string {
+	components := strings.Split(input, ":")
+	if len(components) == 4) {
+		return fmt.Sprintf("%s:%s@%s:%s", components[2], components[3], components[0], components[1])
+	}
+	return input
+}
+
+func generateRandomToken() string {
+	return uuid.NewString()
+}
+
+func generateRandomDate() string {
+	date := time.Now().AddDate(0, 0, -rand.Intn(100))
+	return date.UTC().Format(http.TimeFormat)
+}
+
+func randomChoice(array []string) string {
+	return array[rand.Intn(len(array))]
+}
+
+func generateRandomHttpMethods(count int) string {
+	methods := []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"}
+	var chosenMethods []string
+	for i := 0; i < count; i++ {
+		chosenMethods = append(chosenMethods, randomChoice(methods))
+	}
+	return strings.Join(chosenMethods, ", ")
+}

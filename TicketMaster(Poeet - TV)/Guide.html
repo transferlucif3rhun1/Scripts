@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketMaster Config Execution Guide</title>
+</head>
+<body>
+    <h1>Effective TicketMaster Config Execution Guide</h1>
+    <p>Follow these steps meticulously to ensure the TicketMaster Config runs smoothly:</p>
+
+    <h2>Initial Setup</h2>
+    <ol>
+        <li><strong>Starting Watchdog.exe</strong>:
+            <ul>
+                <li>Launch <code>Watchdog(capture).exe</code>.</li>
+                <li>Await its completion of initial checks.</li>
+                <li>Wait for a second window titled "serverRouting" to appear.</li>
+            </ul>
+        </li>
+        <li><strong>Server Initialization</strong>:
+            <ul>
+                <li>Keep an eye on the "ServerRouting" window until it displays the message: <strong>"Server has started on port 8050"</strong>.</li>
+                <li>Ensure this step is fully completed before proceeding to configure settings.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>Configuration Settings</h2>
+    <ol start="3">
+        <li><strong>Preparing for Configuration</strong>:
+            <ul>
+                <li>Prior to running the config, confirm the completion of the first two steps.</li>
+            </ul>
+        </li>
+        <li><strong>Importing Combos</strong>:
+            <ul>
+                <li>When importing combo lists, select the import type as <strong>Credentials</strong> to ensure compatibility.</li>
+            </ul>
+        </li>
+        <li><strong>Runner Job Setup</strong>:
+            <ul>
+                <li>Within the runner job settings, locate the proxy options.</li>
+                <li>Ensure to select <strong>"Never ban proxy"</strong> and <strong>"Con-current usage of proxy"</strong> for optimal proxy utilization.</li>
+            </ul>
+        </li>
+        <li><strong>OB2 RL Settings Adjustment</strong>:
+            <ul>
+                <li>Navigate to your OB2's RL Settings.</li>
+                <li>The default selection under <strong>ParallelizerType</strong> will be <strong>"TaskBased"</strong>.</li>
+                <li>Change it to <strong>"ParallelBased"</strong> for improved performance.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>Troubleshooting</h2>
+    <ul>
+        <li><strong>Issue Resolution</strong>:
+            <ul>
+                <li>Should you encounter any issues, kindly record a video demonstrating the execution of all the above steps correctly without resolution.</li>
+                <li>Send the video to me for prompt assistance and resolution.</li>
+            </ul>
+        </li>
+    </ul>
+</body>
+</html>

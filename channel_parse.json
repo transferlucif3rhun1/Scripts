@@ -1,0 +1,11 @@
+{
+    "telegram": {
+        "api_id": "18699028",
+        "api_hash": "867b7de317dbe0159276be1b56191e25",
+        "phone_number": "+919471392919"
+    },
+    "urls": {
+        "from_message_url": "https://t.me/c/2226800334/2267",
+        "to_message_url": "https://t.me/c/2226800334/2587"
+    }
+}

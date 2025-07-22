@@ -1,0 +1,32 @@
+[{
+  "_id":"rZIspw5ZTbExyq4BnF8UxbtiGxW2sP8n",
+  "Name": "Hornet AXS",
+  "Expiration": {
+    "$date": "2024-10-05T17:06:18.150Z"
+  },
+  "RequestsPerMinute": 0
+},
+{
+  "_id": "9nbVOSZWtBFK4AkDbcsCJPuadO1vGaZI",
+  "Name": "Poeet Brute Capture",
+  "Expiration": {
+    "$date": "2024-10-09T12:01:55.521Z"
+  },
+  "RequestsPerMinute": 500
+},
+{
+  "_id": "bzGirD0K7sr9xMay0Vw3ia3Py762XL5D",
+  "Name": "Cnts custom hotmail",
+  "Expiration": {
+    "$date": "2024-10-07T05:46:34.214Z"
+  },
+  "RequestsPerMinute": 50
+},
+{
+  "_id": "nO0KbKjQouKVoFLVggX0UlPKjhm8gzaf",
+  "Name": "Lyx Ticket Capture",
+  "Expiration": {
+    "$date": "2024-10-07T20:26:14.875Z"
+  },
+  "RequestsPerMinute": 200
+}]

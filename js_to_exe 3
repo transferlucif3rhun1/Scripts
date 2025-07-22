@@ -1,0 +1,381 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+const { execSync, spawn } = require('child_process');
+const readline = require('readline');
+const os = require('os');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+const colors = {
+  reset: "\x1b[0m",
+  bright: "\x1b[1m",
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  blue: "\x1b[34m",
+  cyan: "\x1b[36m"
+};
+
+function log(message, type = 'info', logToFile = true) {
+  const logMsg = `${new Date().toISOString()} - ${type.toUpperCase()}: ${message}`;
+  
+  if (logToFile && global.logFilePath) {
+    fs.appendFileSync(global.logFilePath, logMsg + '\n');
+  }
+  
+  switch (type) {
+    case 'success': console.log(`${colors.green}✓ ${message}${colors.reset}`); break;
+    case 'error': console.error(`${colors.red}✗ ${message}${colors.reset}`); break;
+    case 'warning': console.warn(`${colors.yellow}⚠ ${message}${colors.reset}`); break;
+    case 'info': console.log(`${colors.blue}ℹ ${message}${colors.reset}`); break;
+    case 'title': console.log(`\n${colors.bright}${colors.cyan}=== ${message} ===${colors.reset}\n`); break;
+    default: console.log(message);
+  }
+}
+
+function createTempDir() {
+  const tmpDirBase = path.join(os.tmpdir(), 'js2exe-');
+  const tempDir = fs.mkdtempSync(tmpDirBase);
+  log(`Created temp directory: ${tempDir}`, 'success');
+  return tempDir;
+}
+
+function setupLogFile(tempDir) {
+  const logFileName = `js2exe-${Date.now()}.log`;
+  const logPath = path.join(tempDir, logFileName);
+  global.logFilePath = logPath;
+  global.logFileName = logFileName;
+  
+  // Initialize log file
+  fs.writeFileSync(logPath, `=== JS2EXE Log - ${new Date().toISOString()} ===\n\n`);
+  return logPath;
+}
+
+function moveLogToCwd() {
+  if (!global.logFilePath || !global.logFileName) return null;
+  
+  try {
+    const cwdLogPath = path.join(process.cwd(), global.logFileName);
+    fs.copyFileSync(global.logFilePath, cwdLogPath);
+    return cwdLogPath;
+  } catch (error) {
+    console.error(`Failed to move log file: ${error.message}`);
+    return null;
+  }
+}
+
+function cleanupTempDir(tempDir, success) {
+  if (!tempDir || !fs.existsSync(tempDir)) return;
+  
+  try {
+    // If failed, move log file to cwd before cleaning up
+    if (!success && global.logFilePath) {
+      const cwdLogPath = moveLogToCwd();
+      if (cwdLogPath) {
+        log(`Log file moved to: ${cwdLogPath}`, 'info');
+      }
+    }
+    
+    // Clean up temp directory
+    log(`Cleaning up temp directory: ${tempDir}`, 'info');
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    log(`Temp directory removed`, 'success');
+  } catch (error) {
+    log(`Warning: Failed to remove temp directory: ${error.message}`, 'warning');
+  }
+}
+
+function executeCommand(command, options = {}) {
+  return new Promise((resolve, reject) => {
+    try {
+      log(`Running: ${command}`, 'info');
+      
+      const proc = spawn(command, [], {
+        ...options,
+        shell: true,
+        stdio: 'inherit'
+      });
+
+      proc.on('close', (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`Command failed with exit code ${code}`));
+        }
+      });
+
+      proc.on('error', (err) => {
+        reject(err);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function extractDependenciesFromFile(filePath) {
+  try {
+    const content = fs.readFileSync(filePath, 'utf8');
+    const requireRegex = /require\(['"]([^./][^'"\n]+)['"]\)/g;
+    const deps = new Set();
+    
+    let match;
+    while ((match = requireRegex.exec(content)) !== null) {
+      const dep = match[1].split('/')[0];
+      if (!isBuiltInModule(dep)) {
+        deps.add(dep);
+      }
+    }
+    
+    return Array.from(deps);
+  } catch (error) {
+    log(`Error extracting dependencies: ${error.message}`, 'warning');
+    return [];
+  }
+}
+
+function isBuiltInModule(name) {
+  const builtinModules = [
+    'fs', 'path', 'http', 'https', 'net', 'os', 'child_process',
+    'crypto', 'events', 'stream', 'util', 'buffer', 'url', 'querystring'
+  ];
+  return builtinModules.includes(name);
+}
+
+function createMinimalPackageJson(tempDir, jsFilePath) {
+  const fileName = path.basename(jsFilePath);
+  const appName = path.basename(jsFilePath, path.extname(jsFilePath));
+  const deps = extractDependenciesFromFile(jsFilePath);
+  
+  const dependencies = {};
+  deps.forEach(dep => {
+    dependencies[dep] = "*";
+  });
+  
+  const packageJson = {
+    name: appName,
+    version: "1.0.0",
+    description: "Packaged with JS2EXE",
+    main: fileName,
+    bin: fileName,
+    dependencies: dependencies,
+    pkg: {
+      assets: [
+        "node_modules/**/*"
+      ],
+      outputPath: "dist"
+    }
+  };
+  
+  const packageJsonPath = path.join(tempDir, 'package.json');
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+  log(`Created new package.json in temp directory`, 'success');
+  
+  return {
+    packageJsonPath,
+    packageJson
+  };
+}
+
+async function installDependencies(tempDir, deps) {
+  log(`Installing ${deps.length} dependencies...`, 'info');
+  
+  // Install each dependency separately to prevent one failure from stopping all
+  const installedDeps = [];
+  const failedDeps = [];
+  
+  for (const dep of deps) {
+    try {
+      log(`Installing dependency: ${dep}`, 'info');
+      await executeCommand(`npm install ${dep} --no-audit --no-fund --loglevel=error`, { cwd: tempDir });
+      installedDeps.push(dep);
+    } catch (err) {
+      log(`Warning: Failed to install ${dep}: ${err.message}`, 'warning');
+      failedDeps.push(dep);
+    }
+  }
+  
+  if (installedDeps.length > 0) {
+    log(`Successfully installed ${installedDeps.length} dependencies`, 'success');
+  }
+  
+  if (failedDeps.length > 0) {
+    log(`Failed to install ${failedDeps.length} dependencies: ${failedDeps.join(', ')}`, 'warning');
+  }
+  
+  return {
+    installedDeps,
+    failedDeps
+  };
+}
+
+function createWrapper(tempDir, jsFileName) {
+  const wrapperPath = path.join(tempDir, 'wrapper.js');
+  const wrapperContent = `
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception:', err);
+  console.log('Press any key to exit...');
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
+  process.stdin.on('data', () => process.exit(1));
+});
+
+try {
+  require('./${jsFileName}');
+} catch (err) {
+  console.error('Error loading application:', err);
+  console.log('Press any key to exit...');
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
+  process.stdin.on('data', () => process.exit(1));
+}
+`;
+  fs.writeFileSync(wrapperPath, wrapperContent);
+  log(`Created wrapper script for error handling`, 'success');
+  return wrapperPath;
+}
+
+async function buildExecutable(tempDir, jsFilePath, outputDir) {
+  const jsFileName = path.basename(jsFilePath);
+  const appName = path.basename(jsFilePath, path.extname(jsFilePath));
+  
+  // Create wrapper script
+  const wrapperPath = createWrapper(tempDir, jsFileName);
+  
+  // Set output path
+  const outputPath = path.join(outputDir, `${appName}.exe`);
+  
+  try {
+    // Ensure pkg is installed
+    try {
+      await executeCommand('pkg -v');
+    } catch (error) {
+      log('pkg not found globally, installing...', 'info');
+      await executeCommand('npm install -g pkg');
+    }
+    
+    // Try packaging with wrapper script
+    log(`Building executable...`, 'info');
+    await executeCommand(`pkg "${wrapperPath}" --targets node16-win-x64 --output "${outputPath}" --compress GZip`, { cwd: tempDir });
+    
+    if (fs.existsSync(outputPath)) {
+      log(`Executable created at: ${outputPath}`, 'success');
+      return outputPath;
+    } else {
+      throw new Error('Failed to create executable');
+    }
+  } catch (error) {
+    log(`Error during packaging: ${error.message}`, 'error');
+    
+    // Try alternative packaging approach
+    try {
+      log('Trying alternative packaging method...', 'info');
+      
+      // Update package.json to use wrapper as main
+      const packageJsonPath = path.join(tempDir, 'package.json');
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+      packageJson.main = 'wrapper.js';
+      packageJson.bin = 'wrapper.js';
+      fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+      
+      // Try packaging using package.json config
+      await executeCommand(`pkg . --targets node16-win-x64 --output "${outputPath}"`, { cwd: tempDir });
+      
+      if (fs.existsSync(outputPath)) {
+        log(`Executable created at: ${outputPath}`, 'success');
+        return outputPath;
+      } else {
+        throw new Error('Failed to create executable with alternative method');
+      }
+    } catch (altError) {
+      log(`Alternative packaging method failed: ${altError.message}`, 'error');
+      throw new Error('All packaging attempts failed');
+    }
+  }
+}
+
+async function main() {
+  let tempDir = null;
+  let success = false;
+  
+  try {
+    rl.question('Enter the path to your JS file: ', async (inputPath) => {
+      try {
+        const startTime = Date.now();
+        inputPath = path.resolve(inputPath);
+        
+        if (!fs.existsSync(inputPath)) {
+          throw new Error(`Path does not exist: ${inputPath}`);
+        }
+        
+        if (!fs.statSync(inputPath).isFile() || path.extname(inputPath).toLowerCase() !== '.js') {
+          throw new Error(`Please specify a JavaScript (.js) file`);
+        }
+        
+        log(`Converting ${path.basename(inputPath)} to EXE`, 'title');
+        
+        // Create temp directory
+        tempDir = createTempDir();
+        
+        // Setup log file in temp directory
+        setupLogFile(tempDir);
+        
+        // Copy JS file to temp directory
+        const jsFileName = path.basename(inputPath);
+        const tempJsPath = path.join(tempDir, jsFileName);
+        fs.copyFileSync(inputPath, tempJsPath);
+        log(`Copied ${jsFileName} to temp directory`, 'success');
+        
+        // Create fresh package.json with dependencies from the file
+        const { packageJson } = createMinimalPackageJson(tempDir, inputPath);
+        
+        // Install dependencies
+        const deps = Object.keys(packageJson.dependencies);
+        await installDependencies(tempDir, deps);
+        
+        // Build executable
+        const outputDir = path.dirname(inputPath);
+        const outputPath = await buildExecutable(tempDir, jsFileName, outputDir);
+        
+        const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+        log(`Conversion completed in ${duration} seconds!`, 'title');
+        log(`Executable is at: ${outputPath}`, 'success');
+        
+        // Mark as successful
+        success = true;
+        
+        // Clean up temp directory (with success flag)
+        cleanupTempDir(tempDir, success);
+        
+        rl.close();
+      } catch (error) {
+        log(`Error: ${error.message}`, 'error');
+        
+        // Clean up temp directory (with failure flag)
+        if (tempDir) {
+          cleanupTempDir(tempDir, false);
+          log(`Log file saved to current directory`, 'info');
+        }
+        
+        rl.close();
+      }
+    });
+  } catch (error) {
+    log(`Fatal error: ${error.message}`, 'error');
+    
+    // Clean up temp directory (with failure flag)
+    if (tempDir) {
+      cleanupTempDir(tempDir, false);
+      log(`Log file saved to current directory`, 'info');
+    }
+    
+    rl.close();
+  }
+}
+
+main();

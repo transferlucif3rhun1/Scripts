@@ -1,0 +1,27 @@
+{
+  "name": "reese84",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node reese84.js"
+  },
+  "pkg": {
+    "scripts": "reese84.js",
+    "targets": [
+      "windows"
+    ]
+  },
+  "bin": {
+    "my-command": "reese84.js"
+  },
+  "dependencies": {
+    "@angablue/exe": "^2.1.1",
+    "axios": "^1.5.0",
+    "canvas": "^2.11.2",
+    "cjs": "^0.0.11",
+    "dotenv": "^16.3.2",
+    "express": "^4.18.2",
+    "gl": "^6.0.2",
+    "jsdom": "^22.1.0",
+    "jsdom-global": "^3.0.2"
+  }
+}

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ultimate Website Analyzer</title>
+  <link rel="stylesheet" href="devtools-panel.css">
+</head>
+<body>
+  <div id="analyzer-app">
+    <div class="analyzer-header">
+      <h2>Ultimate Website Performance Analyzer</h2>
+      <div class="controls">
+        <button id="start-session" class="btn btn-primary">▶ Start Analysis</button>
+        <button id="stop-session" class="btn btn-danger" disabled>⏹ Stop Session</button>
+        <button id="pause-session" class="btn btn-warning" disabled>⏸ Pause</button>
+        <button id="test-resource" class="btn btn-info" disabled style="display: none;">🧪 Test Resource</button>
+        <div class="session-info">
+          <span class="session-status" id="session-status">Ready</span>
+          <span class="session-time" id="session-time">00:00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Session Banner -->
+    <div class="session-banner" id="session-banner" style="display: none;">
+      <div class="banner-content">
+        <span class="banner-text">🔄 Analysis in progress...</span>
+        <button id="stop-session-banner" class="btn btn-danger btn-small">⏹ Stop</button>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-text" id="progress-text">Ready to analyze website performance</div>
+    </div>
+
+    <div class="analyzer-content">
+      <div class="comparison-section">
+        <div class="comparison-panel">
+          <h3>Before (Baseline)</h3>
+          <div class="screenshot-container">
+            <img id="before-screenshot" class="screenshot" alt="Baseline screenshot" />
+            <div class="metrics-overlay" id="before-metrics">
+              <div class="metric">Load Time: <span id="before-load-time">-</span></div>
+              <div class="metric">Requests: <span id="before-requests">-</span></div>
+              <div class="metric">Size: <span id="before-size">-</span></div>
+              <div class="metric">GPU: <span id="before-gpu">-</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="comparison-panel">
+          <h3>After (Modified)</h3>
+          <div class="screenshot-container">
+            <img id="after-screenshot" class="screenshot" alt="Modified screenshot" />
+            <div class="metrics-overlay" id="after-metrics">
+              <div class="metric">Load Time: <span id="after-load-time">-</span></div>
+              <div class="metric">Requests: <span id="after-requests">-</span></div>
+              <div class="metric">Size: <span id="after-size">-</span></div>
+              <div class="metric">GPU: <span id="after-gpu">-</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-section" id="feedback-section" style="display: none;">
+        <h3>Testing: <span id="current-feature">JavaScript</span></h3>
+        <p class="feedback-question">Does the website function the same without this feature?</p>
+        
+        <div class="feedback-options">
+          <button class="feedback-btn same" data-response="same">
+            ✅ Same - Keep Disabled
+          </button>
+          <button class="feedback-btn different" data-response="different">
+            ❌ Different - Re-enable
+          </button>
+          <button class="feedback-btn broken" data-response="broken">
+            💥 Broken - Critical Feature
+          </button>
+        </div>
+        
+        <div class="feedback-details">
+          <textarea id="feedback-notes" placeholder="Optional: Add notes about the changes you observed..."></textarea>
+        </div>
+      </div>
+
+      <div class="monitoring-panels">
+        <div class="panel-section network-section">
+          <h3>Network Activity 
+            <span class="count-badge" id="network-count">0</span>
+            <button class="toggle-btn" id="toggle-network">▼</button>
+          </h3>
+          <div class="panel-content" id="network-panel">
+            <div class="panel-filters">
+              <select id="network-filter">
+                <option value="all">All Requests</option>
+                <option value="blocked">Blocked</option>
+                <option value="failed">Failed</option>
+                <option value="script">Scripts</option>
+                <option value="stylesheet">Stylesheets</option>
+                <option value="image">Images</option>
+                <option value="xhr">XHR/Fetch</option>
+                <option value="media">Media</option>
+              </select>
+              <input type="search" id="network-search" placeholder="Filter URLs..." />
+            </div>
+            
+            <div class="network-list" id="network-list">
+              <div class="network-header">
+                <div class="col-method">Method</div>
+                <div class="col-url">URL</div>
+                <div class="col-status">Status</div>
+                <div class="col-size">Size</div>
+                <div class="col-time">Time</div>
+                <div class="col-type">Type</div>
+              </div>
+              <div class="network-requests" id="network-requests"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section gpu-section">
+          <h3>GPU & Performance 
+            <span class="count-badge" id="gpu-count">0</span>
+            <button class="toggle-btn" id="toggle-gpu">▼</button>
+          </h3>
+          <div class="panel-content" id="gpu-panel">
+            <div class="gpu-stats">
+              <div class="stat-card">
+                <h4>WebGL Contexts</h4>
+                <div class="stat-value" id="webgl-contexts">0</div>
+              </div>
+              <div class="stat-card">
+                <h4>Canvas Operations</h4>
+                <div class="stat-value" id="canvas-operations">0</div>
+              </div>
+              <div class="stat-card">
+                <h4>GPU Memory</h4>
+                <div class="stat-value" id="gpu-memory">0 MB</div>
+              </div>
+              <div class="stat-card">
+                <h4>Frame Rate</h4>
+                <div class="stat-value" id="frame-rate">0 FPS</div>
+              </div>
+            </div>
+            <div class="gpu-details" id="gpu-details"></div>
+          </div>
+        </div>
+
+        <div class="panel-section console-section">
+          <h3>Console Output 
+            <span class="count-badge" id="console-count">0</span>
+            <button class="toggle-btn" id="toggle-console">▼</button>
+          </h3>
+          <div class="panel-content" id="console-panel">
+            <div class="panel-filters">
+              <button class="console-filter active" data-level="all">All</button>
+              <button class="console-filter" data-level="error">Errors</button>
+              <button class="console-filter" data-level="warn">Warnings</button>
+              <button class="console-filter" data-level="info">Info</button>
+              <button class="console-filter" data-level="log">Logs</button>
+            </div>
+            
+            <div class="console-output" id="console-output"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-section" id="results-section" style="display: none;">
+        <h3>Analysis Results</h3>
+        <div class="results-grid">
+          <div class="result-card performance">
+            <h4>Performance Improvement</h4>
+            <div class="result-value" id="performance-improvement">0%</div>
+            <div class="result-details">
+              <div>Load Time: <span id="load-time-diff">0ms</span></div>
+              <div>Requests: <span id="requests-diff">0</span></div>
+              <div>Size: <span id="size-diff">0 KB</span></div>
+            </div>
+          </div>
+          
+          <div class="result-card eliminated">
+            <h4>Features Eliminated</h4>
+            <div class="result-list" id="eliminated-features"></div>
+          </div>
+          
+          <div class="result-card required">
+            <h4>Required Features</h4>
+            <div class="result-list" id="required-features"></div>
+          </div>
+          
+          <div class="result-card score">
+            <h4>Optimization Score</h4>
+            <div class="result-value" id="optimization-score">-</div>
+            <div class="score-breakdown" id="score-breakdown"></div>
+          </div>
+        </div>
+        
+        <div class="export-section">
+          <button id="export-results" class="btn btn-secondary">📊 Export Results</button>
+          <button id="apply-optimizations" class="btn btn-primary">🚀 Apply Optimizations</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-bar">
+      <div class="status-left">
+        <span id="current-url">No URL</span>
+      </div>
+      <div class="status-right">
+        <span id="extension-status">Extension Ready</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="devtools-panel.js"></script>
+</body>
+</html>

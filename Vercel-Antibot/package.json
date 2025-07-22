@@ -1,0 +1,22 @@
+{
+  "name": "vercel-sandbox",
+  "version": "1.0.0",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "prettier": "prettier --write src/**/*.js"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "koffi": "^2.11.0",
+    "undici": "^7.10.0"
+  },
+  "keywords": [],
+  "description": ""
+}

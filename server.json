@@ -1,0 +1,13 @@
+{
+  "serverPort": "3001",
+  "mongoURI": "mongodb+srv://mongodbapikeys:mongodbapikeys@apikeysmanager.mmm8e.mongodb.net/?retryWrites=true&w=majority&appName=apiKeysManager",
+  "databaseName": "apiKeyManager",
+  "apiKeysCollection": "apiKeys",
+  "readTimeout": 10,
+  "writeTimeout": 10,
+  "idleTimeout": 120,
+  "rateLimitReset": 60,
+  "workerPoolSize": 10,
+  "logMaxLines": 10000,
+  "loglevel": "debug"
+}

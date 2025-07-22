@@ -1,0 +1,28 @@
+#mujimg {
+	width: 70%;
+	height: 70%;
+}
+
+* {
+	text-align: center;
+}
+
+a:link {
+	color: black;
+}
+
+a:visited {
+	color: purple;
+}
+
+a:hover {
+	color: red;
+}
+
+a:active {
+	color: green;
+}
+
+button {
+	cursor: pointer;
+}

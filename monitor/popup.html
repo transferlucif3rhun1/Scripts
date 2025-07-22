@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Website Analyzer</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="popup-header">
+      <h3>Website Analyzer</h3>
+      <div class="status-indicator" id="status-indicator"></div>
+    </div>
+
+    <div class="popup-content">
+      <div class="current-page">
+        <div class="page-info">
+          <div class="page-url" id="page-url">Loading...</div>
+          <div class="page-stats" id="page-stats">
+            <span class="stat">Elements: <span id="element-count">-</span></span>
+            <span class="stat">Requests: <span id="request-count">-</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <button id="start-quick-analysis" class="action-btn primary" disabled>
+          <span class="btn-icon">🚀</span>
+          <span class="btn-text">Quick Analysis</span>
+        </button>
+        
+        <button id="open-devtools" class="action-btn secondary">
+          <span class="btn-icon">🔧</span>
+          <span class="btn-text">Open DevTools</span>
+        </button>
+        
+        <button id="capture-baseline" class="action-btn secondary" disabled>
+          <span class="btn-icon">📸</span>
+          <span class="btn-text">Capture Baseline</span>
+        </button>
+      </div>
+
+      <div class="session-info" id="session-info" style="display: none;">
+        <div class="session-header">
+          <span class="session-title">Active Session</span>
+          <span class="session-time" id="session-duration">00:00</span>
+        </div>
+        
+        <div class="session-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" id="popup-progress"></div>
+          </div>
+          <div class="progress-text" id="popup-progress-text">Initializing...</div>
+        </div>
+        
+        <div class="session-controls">
+          <button id="pause-session" class="control-btn">⏸</button>
+          <button id="stop-session" class="control-btn danger">⏹</button>
+        </div>
+      </div>
+
+      <div class="quick-stats" id="quick-stats" style="display: none;">
+        <div class="stat-group">
+          <div class="stat-card">
+            <div class="stat-label">GPU Contexts</div>
+            <div class="stat-value" id="gpu-contexts">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Network</div>
+            <div class="stat-value" id="network-requests">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Errors</div>
+            <div class="stat-value" id="console-errors">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Performance</div>
+            <div class="stat-value" id="performance-score">-</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recent-results" id="recent-results" style="display: none;">
+        <div class="results-header">
+          <span>Last Analysis</span>
+          <span class="results-time" id="last-analysis-time">-</span>
+        </div>
+        <div class="results-summary">
+          <div class="improvement-badge" id="improvement-badge">0% faster</div>
+          <div class="features-summary" id="features-summary">No features eliminated</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-footer">
+      <div class="footer-links">
+        <button id="view-history" class="link-btn">History</button>
+        <button id="export-data" class="link-btn">Export</button>
+        <button id="settings" class="link-btn">Settings</button>
+      </div>
+      <div class="version-info">v1.0.0</div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+opencv-python
+rsa
+pycryptodomex
+curl_cffi

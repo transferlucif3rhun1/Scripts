@@ -1,0 +1,12 @@
+{
+  "dazzy-bitwarden": {
+    "name": "dazzy-bitwarden",
+    "guid": "2uoPJOSFY-8oZyYp6Yw7dK2kv7ttJrVle9Myit-dpBg",
+    "flagged": true
+  },
+  "testuser": {
+    "name": "testuser",
+    "guid": "6a6c0474-ed51-4c09-9b8e-fa915f9e62a2",
+    "flagged": false
+  }
+}

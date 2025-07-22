@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complete Statistical Formulas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #3498db;
+            margin-top: 20px;
+        }
+        ul {
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 15px;
+        }
+        .formula {
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border-left: 3px solid #3498db;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .explanation {
+            margin-top: 5px;
+            padding-left: 15px;
+            border-left: 2px solid #ddd;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .datatype {
+            font-weight: bold;
+            color: #e74c3c;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Complete Statistical Formulas</h1>
+
+    <h2>Measures of Central Tendency</h2>
+
+    <h3>Arithmetic Mean</h3>
+    <div class="datatype">For Raw/Ungrouped Data:</div>
+    <ul>
+        <li>
+            <div class="formula">Mean = Sum of all values / Number of values</div>
+            <div class="explanation">
+                Formula: Mean = (x₁ + x₂ + ... + xₙ)/n = Σx/n
+                <br><br>
+                Where:
+                <br>• x₁, x₂, ..., xₙ are individual data values
+                <br>• n is the total number of data values
+                <br>• Σ represents the sum
+                <br><br>
+                Example: For data 5, 8, 12, 15, 20, the Mean = (5 + 8 + 12 + 15 + 20) / 5 = 60 / 5 = 12
+            </div>
+        </li>
+        <li>
+            <div class="formula">Shortcut method: Mean = Assumed mean + Sum of deviations / Number of values</div>
+            <div class="explanation">
+                Formula: Mean = A + Σd/n
+                <br><br>
+                Where:
+                <br>• A is an assumed mean (any convenient value)
+                <br>• d = (x - A) is the deviation of each value from the assumed mean
+                <br>• n is the total number of values
+                <br><br>
+                This method is useful when dealing with large numbers to simplify calculations.
+                <br><br>
+                Example: For data 82, 93, 86, 77, 95, if we assume A = 80:
+                <br>• Deviations: 2, 13, 6, -3, 15
+                <br>• Sum of deviations = 33
+                <br>• Mean = 80 + 33/5 = 80 + 6.6 = 86.6
+            </div>
+        </li>
+    </ul>
+
+    <div class="datatype">For Frequency Distribution (Grouped Data):</div>
+    <ul>
+        <li>
+            <div class="formula">Mean = Sum of (frequency × value) / Sum of frequencies</div>
+            <div class="explanation">
+                Formula: Mean = Σfx/Σf
+                <br><br>
+                Where:
+                <br>• f is the frequency
+                <br>• x is the value (or class mid-point for grouped data)
+                <br>• Σf is the sum of all frequencies (total number of observations)
+                <br><br>
+                Example: For the following data:
+                <table>
+                    <tr><th>Value (x)</th><th>Frequency (f)</th><th>f × x</th></tr>
+                    <tr><td>10</td><td>2</td><td>20</td></tr>
+                    <tr><td>20</td><td>5</td><td>100</td></tr>
+                    <tr><td>30</td><td>8</td><td>240</td></tr>
+                    <tr><td>40</td><td>4</td><td>160</td></tr>
+                    <tr><td>50</td><td>1</td><td>50</td></tr>
+                    <tr><td>Total</td><td>Σf = 20</td><td>Σfx = 570</td></tr>
+                </table>
+                Mean = 570/20 = 28.5
+            </div>
+        </li>
+        <li>
+            <div class="formula">Step deviation method: Mean = Assumed mean + [Sum of (frequency × deviation) / Sum of frequencies] × Class width</div>
+            <div class="explanation">
+                Formula: Mean = A + (Σfu/Σf) × h
+                <br><br>
+                Where:
+                <br>• A is an assumed mean (usually the mid-value of the middle class)
+                <br>• f is the frequency
+                <br>• u = (x - A)/h is the deviation in class units
+                <br>• h is the class width
+                <br>• Σf is the sum of all frequencies
+                <br><br>
+                Example: For grouped data with class interval width of 10 and assumed mean of 30:
+                <table>
+                    <tr><th>Class</th><th>Mid-point (x)</th><th>Frequency (f)</th><th>Deviation (u=(x-30)/10)</th><th>f × u</th></tr>
+                    <tr><td>10-20</td><td>15</td><td>6</td><td>-1.5</td><td>-9</td></tr>
+                    <tr><td>20-30</td><td>25</td><td>10</td><td>-0.5</td><td>-5</td></tr>
+                    <tr><td>30-40</td><td>35</td><td>14</td><td>0.5</td><td>7</td></tr>
+                    <tr><td>40-50</td><td>45</td><td>8</td><td>1.5</td><td>12</td></tr>
+                    <tr><td>50-60</td><td>55</td><td>2</td><td>2.5</td><td>5</td></tr>
+                    <tr><td>Total</td><td></td><td>Σf = 40</td><td></td><td>Σfu = 10</td></tr>
+                </table>
+                Mean = 30 + (10/40) × 10 = 30 + 2.5 = 32.5
+            </div>
+        </li>
+    </ul>
+
+    <h3>Geometric Mean (GM)</h3>
+    <div class="datatype">For Raw/Ungrouped Data:</div>
+    <ul>
+        <li>
+            <div class="formula">GM = n<sup>th</sup> root of the product of all values</div>
+            <div class="explanation">
+                Formula: GM = ⁿ√(x₁ × x₂ × ... × xₙ)
+                <br><br>
+                Where:
+                <br>• x₁, x₂, ..., xₙ are individual data values
+                <br>• n is the total number of data values
+                <br><br>
+                Example: For data 2, 4, 8, the GM = ∛(2 × 4 × 8) = ∛64 = 4
+            </div>
+        </li>
+        <li>
+            <div class="formula">Using logarithms: GM = antilog[Sum of logarithms of values / Number of values]</div>
+            <div class="explanation">
+                Formula: GM = antilog[Σlog(x)/n]
+                <br><br>
+                Where:
+                <br>• log(x) is the logarithm of each value
+                <br>• n is the total number of values
+                <br><br>
+                This method simplifies calculations, especially for large numbers.
+                <br><br>
+                Example: For data 10, 20, 30:
+                <br>• log(10) = 1, log(20) = 1.301, log(30) = 1.477
+                <br>• Sum of logs = 3.778
+                <br>• log(GM) = 3.778/3 = 1.259
+                <br>• GM = antilog(1.259) = 18.16
+            </div>
+        </li>
+    </ul>
+
+    <div class="datatype">For Frequency Distribution (Grouped Data):</div>
+    <ul>
+        <li>
+            <div class="formula">GM = antilog[Sum of (frequency × log of value) / Sum of frequencies]</div>
+            <div class="explanation">
+                Formula: GM = antilog[Σf×log(x)/Σf]
+                <br><br>
+                Where:
+                <br>• f is the frequency
+                <br>• x is the value (or class mid-point for grouped data)
+                <br>• Σf is the sum of all frequencies
+                <br><br>
+                Example: For the following data:
+                <table>
+                    <tr><th>Value (x)</th><th>Frequency (f)</th><th>log(x)</th><th>f × log(x)</th></tr>
+                    <tr><td>10</td><td>2</td><td>1.000</td><td>2.000</td></tr>
+                    <tr><td>20</td><td>5</td><td>1.301</td><td>6.505</td></tr>
+                    <tr><td>30</td><td>8</td><td>1.477</td><td>11.816</td></tr>
+                    <tr><td>40</td><td>4</td><td>1.602</td><td>6.408</td></tr>
+                    <tr><td>50</td><td>1</td><td>1.699</td><td>1.699</td></tr>
+                    <tr><td>Total</td><td>Σf = 20</td><td></td><td>Σf×log(x) = 28.428</td></tr>
+                </table>
+                log(GM) = 28.428/20 = 1.421
+                <br>
+                GM = antilog(1.421) = 26.38
+            </div>
+        </li>
+    </ul>
+
+    <h3>Harmonic Mean (HM)</h3>
+    <div class="datatype">For Raw/Ungrouped Data:</div>
+    <ul>
+        <li>
+            <div class="formula">HM = Number of values / Sum of reciprocals of values</div>
+            <div class="explanation">
+                Formula: HM = n / Σ(1/x)
+                <br><br>
+                Where:
+                <br>• x is each individual value
+                <br>• n is the total number of values
+                <br><br>
+                Example: For data 4, 5, 10, the HM = 3 / (1/4 + 1/5 + 1/10) = 3 / (0.25 + 0.20 + 0.10) = 3 / 0.55 = 5.45
+            </div>
+        </li>
+    </ul>
+
+    <div class="datatype">For Frequency Distribution (Grouped Data):</div>
+    <ul>
+        <li>
+            <div class="formula">HM = Sum of frequencies / Sum of (frequency/value)</div>
+            <div class="explanation">
+                Formula: HM = Σf / Σ(f/x)
+                <br><br>
+                Where:
+                <br>• f is the frequency
+                <br>• x is the value (or class mid-point for grouped data)
+                <br><br>
+                Example: For the following data:
+                <table>
+                    <tr><th>Value (x)</th><th>Frequency (f)</th><th>f/x</th></tr>
+                    <tr><td>4</td><td>3</td><td>0.750</td></tr>
+                    <tr><td>5</td><td>5</td><td>1.000</td></tr>
+                    <tr><td>8</td><td>7</td><td>0.875</td></tr>
+                    <tr><td>10</td><td>4</td><td>0.400</td></tr>
+                    <tr><td>20</td><td>1</td><td>0.050</td></tr>
+                    <tr><td>Total</td><td>Σf = 20</td><td>Σ(f/x) = 3.075</td></tr>
+                </table>
+                HM = 20/3.075 = 6.50
+            </div>
+        </li>
+    </ul>
+
+    <h3>Median</h3>
+    <div class="datatype">For Raw/Ungrouped Data (Odd Number of Values):</div>
+    <ul>
+        <li>
+            <div class="formula">Median = Value of the middle position</div>
+            <div class="explanation">
+                Formula: Median = Value at position (n+1)/2
+                <br><br>
+                Where:
+                <br>• n is the total number of values
+                <br>• Values must be arranged in ascending or descending order
+                <br><br>
+                Example: For data 3, 5, 7, 8, 9 (n=5), Median = value at position (5+1)/2 = 3rd position = 7
+            </div>
+        </li>
+    </ul>
+
+    <div class="datatype">For Raw/Ungrouped Data (Even Number of Values):</div>
+    <ul>
+        <li>
+            <div class="formula">Median = Average of the two middle values</div>
+            <div class="explanation">
+                Formula: Median = [Value at position n/2 + Value at position (n/2)+1] / 2
+                <br><br>
+                Where:
+                <br>• n is the total number of values
+                <br>• Values must be arranged in ascending or descending order
+                <br><br>
+                Example: For data 3, 5, 7, 8 (n=4), Median = [5 + 7]/2 = 6
+            </div>
+        </li>
+    </ul>
+
+    <div class="datatype">For Frequency Distribution (Grouped Data):</div>
+    <ul>
+        <li>
+            <div class="formula">Median = L + [(n/2 - CF) / f] × h</div>
+            <div class="explanation">
+                Where:
+                <br>• L is the lower limit of the median class
+                <br>• n is the total frequency (Σf)
+                <br>• CF is the cumulative frequency before the median class
+                <br>• f is the frequency of the median class
+                <br>• h is the width of the class interval
+                <br><br>
+                Steps to find the median in grouped data:
+                <br>1. Determine the cumulative frequency for each class
+                <br>2. Find n/2 (half of the total frequency)
+                <br>3. The median class is the first class whose cumulative frequency equals or exceeds n/2
+                <br>4. Apply the formula
+                <br><br>
+                Example:
+                <table>
+                    <tr><th>Class</th><th>Frequency (f)</th><th>Cumulative Frequency (CF)</th></tr>
+                    <tr><td>0-10</td><td>5</td><td>5</td></tr>
+                    <tr><td>10-20</td><td>8</td><td>13</td></tr>
+                    <tr><td>20-30</td><td>15</td><td>28</td></tr>
+                    <tr><td>30-40</td><td>12</td><td>40</td></tr>
+                    <tr><td>40-50</td><td>7</td><td>47</td></tr>
+                    <tr><td>50-60</td><td>3</td><td>50</td></tr>
+                    <tr><td>Total</td><td>Σf = 50</td><td></td></tr>
+                </table>
+                
+                For n = 50, n/2 = 25
+                <br>The median class is 20-30 (as cumulative frequency 28 > 25)
+                <br>L = 20, CF = 13, f = 15, h = 10
+                <br>Median = 20 + [(25 - 13) / 15] × 10 = 20 + [12 / 15] × 10 = 20 + 8 = 28
+            </div>
+        </li>
+    </ul>
+
+    <h3>Quartiles</h3>
+    <div class="datatype">For Raw/Ungrouped Data:</div>
+    <ul>
+        <li>
+            <div class="formula">First quartile (Q₁): value at position (n+1)/4</div>
+            <div class="explanation">
+                Where:
+                <br>• n is the total number of values
+                <br>• Values must be arranged in ascending or descending order
+                <br><br>
+                Example: For data 3, 7, 8, 12, 15, 18, 21, 25 (n=8),
+                <br>Q₁ = value at position (8+1)/4 = 2.25th position
+                <br>= value at 2nd position + 0.25(value at 3rd position - value at 2nd position)
+                <br>= 7 + 0.25(8 - 7) = 7 + 0.25 = 7.25
+            </div>
+        </li>
+        <li>
+            <div class="formula">Third quartile (Q₃): value at position 3(n+1)/4</div>
+            <div class="explanation">
+                Where:
+                <br>• n is the total number of values
+                <br>• Values must be arranged in ascending or descending order
+                <br><br>
+                Example: For data 3, 7, 8, 12, 15, 18, 21, 25 (n=8),
+                <br>Q₃ = value at position 3(8+1)/4 = 6.75th position
+                <br>= value at 6th position + 0.75(value at 7th position - value at 6th position)
+                <br>= 18 + 0.75(21 - 18) = 18 + 2.25 = 20.25
+            </div>
+        </li>
+    </ul>
+
+    <div class="datatype">For Frequency Distribution (Grouped Data):</div>
+    <ul>
+        <li>
+            <div class="formula">Q₁ = L + [(n/4 - CF) / f] × h</div>
+            <div class="explanation">
+                Where:
+                <br>• L is the lower limit of the first quartile class
+                <br>• n is the total frequency (Σf)
+                <br>• CF is the cumulative frequency before the first quartile class
+                <br>• f is the frequency of the first quartile class
+                <br>• h is the width of the class interval
+                <br><br>
+                The first quartile class is the first class whose cumulative frequency equals or exceeds n/4.
+            </div>
+        </li>
+        <li>
+            <div class="formula">Q₃ = L + [(3n/4 - CF) / f] × h</div>
+            <div class="explanation">
+                Where:
+                <br>• L is the lower limit of the third quartile class
+                <br>• n is the total frequency (Σf)
+                <br>• CF is the cumulative frequency before the third quartile class
+                <br>• f is the frequency of the third quartile class
+                <br>• h is the width of the class interval
+                <br><br>
+                The third quartile class is the first class whose cumulative frequency equals or exceeds 3n/4.
+                <br><br>
+                Example using the same data as for median:
+                <table>
+                    <tr><th>Class</th><th>Frequency (f)</th><th>Cumulative Frequency (CF)</th></tr>
+                    <tr><td>0-10</td><td>5</td><td>5</td></tr>
+                    <tr><td>10-20</td><td>8</td><td>13</td></tr>
+                    <tr><td>20-30</td><td>15</td><td>28</td></tr>
+                    <tr><td>30-40</td><td>12</td><td>40</td></tr>
+                    <tr><td>40-50</td><td>7</td><td>47</td></tr>
+                    <tr><td>50-60</td><td>3</td><td>50</td></tr>
+                </table>
+                
+                For n = 50:
+                <br>• n/4 = 12.5, so Q₁ class is 10-20 (CF = 13 > 12.5)
+                  <br>Q₁ = 10 + [(12.5 - 5) / 8] × 10 = 10 + [7.5 / 8] × 10 = 10 + 9.38 = 19.38
+                <br>• 3n/4 = 37.5, so Q₃ class is 30-40 (CF = 40 > 37.5)
+                  <br>Q₃ = 30 + [(37.5 - 28) / 12] × 10 = 30 + [9.5 / 12] × 10 = 30 + 7.92 = 37.92
+            </div>
+        </li>
+    </ul>
+
+    <h3>Mode</h3>
+    <div class="datatype">For Raw/Ungrouped Data:</div>
+    <ul>
+        <li>
+            <div class="formula">Mode = Value that occurs most frequently</div>
+            <div class="explanation">
+                The mode is simply the value in a data set that appears most often.
+                <br><br>
+                Example: For data 2, 3, 3, 4, 5, 5, 5, 6, 8, the mode is 5 (appears three times)
+                <br><br>
+                A data set can have:
+                <br>• No mode (if all values appear with the same frequency)
+                <br>• One mode (unimodal)
+                <br>• Two modes (bimodal)
+                <br>• More than two modes (multimodal)
+            </div>
+        </li>
+    </ul>
+
+    <div class="datatype">For Frequency Distribution (Grouped Data):</div>
+    <ul>
+        <li>
+            <div class="formula">Mode = L + [(f<sub>m</sub> - f<sub>1</sub>) / (2f<sub>m</sub> - f<sub>1</sub> - f<sub>2</sub>)] × h</div>
+            <div class="explanation">
+                Where:
+                <br>• L is the lower limit of the modal class (class with highest frequency)
+                <br>• f<sub>m</sub> is the frequency of the modal class
+                <br>• f<sub>1</sub> is the frequency of the class preceding the modal class
+                <br>• f<sub>2</sub> is the frequency of the class succeeding the modal class
+                <br>• h is the width of the class interval
+                <br><br>
+                Example: For the following frequency distribution:
+                <table>
+                    <tr><th>Class</th><th>Frequency</th></tr>
+                    <tr><td>0-10</td><td>5</td></tr>
+                    <tr><td>10-20</td><td>12</td></tr>
+                    <tr><td>20-30</td><td>22</td></tr>
+                    <tr><td>30-40</td><td>15</td></tr>
+                    <tr><td>40-50</td><td>8</td></tr>
+                </table>
+                
+                The modal class is 20-30 (highest frequency = 22)
+                <br>L = 20, f<sub>m</sub> = 22, f<sub>1</sub> = 12, f<sub>2</sub> = 15, h = 10
+                <br>Mode = 20 + [(22 - 12) / (2×22 - 12 - 15)] × 10
+                <br>= 20 + [10 / 17] × 10
+                <br>= 20 + 5.88
+                <br>= 25.88
+            </div>
+        </li>
+        <li>
+            <div class="formula">Empirical formula: Mode = 3(Median) - 2(Mean)</div>
+            <div class="explanation">
+                This is an alternative method to estimate the mode when the mean and median are known.
+                <br><br>
+                This formula works best for moderately skewed distributions.
+                <br><br>
+                Example: If Mean = 25 and Median = 23, then:
+                <br>Mode = 3(23) - 2(25) = 69 - 50 = 19
+            </div>
+        </li>
+    </ul>
+
+    <h3>Empirical Relationship</h3>
+    <ul>
+        <li>
+            <div class="formula">Mean - Mode = 3(Mean - Median)</div>
+            <div class="explanation">
+                This relationship is used to estimate one measure when the other two are known.
+                <br><br>
+                For moderately skewed distributions, the difference between the mean and the mode is approximately three times the difference between the mean and the median.
+                <br><br>
+                This can be rearranged as:
+                <br>• Mode = Mean - 3(Mean - Median)
+                <br>• Mode = 3(Median) - 2(Mean)
+            </div>
+        </li>
+        <li>
+            <div class="formula">Mean = Mode + 3(Median - Mode)/2</div>
+            <div class="explanation">
+                Another form of the empirical relationship that can be derived from the first formula.
+                <br><br>
+                This relationship is approximate and works best for moderately skewed distributions.
+            </div>
+        </li>
+    </ul>
+
+    <h2>Measures of Dispersion</h2>
+
+    <h3>Range</h3>
+    <div class="datatype">For Raw/Ungrouped Data:</div>
+    <ul>
+        <li>
+            <div class="formula">Range = Maximum value - Minimum value</div>
+            <div class="explanation">
+                The range is the simplest measure of dispersion, representing the spread between the largest and smallest values in a data set.
+                <br><br>
+                Example: For data 5, 8, 12, 15, 20, the Range = 20 - 5 = 15
+            </div>
+        </li>
+        <li>
+            <div class="formula">Coefficient of Range = (Maximum value - Minimum value) / (Maximum value + Minimum value)</div>
+            <div class="explanation">
+                Formula: Coefficient of Range = (Max - Min) / (Max + Min)
+                <br><br>
+                The coefficient of range is a relative measure of dispersion that allows comparison between different data sets.
+                <br><br>
+                Example: For data 5, 8, 12, 15, 20, the Coefficient of Range = (20 - 5) / (20 + 5) = 15/25 = 0.6
+            </div>
+        </li>
+    </ul>
+
+    <div class="datatype">For Frequency Distribution (Grouped Data):</div>
+    <ul>
+        <li>
+            <div class="formula">Range = Upper limit of highest class - Lower limit of lowest class</div>
+            <div class="explanation">
+                For grouped data, the range is calculated using the class limits rather than individual values.
+                <br><br>
+                Example: For classes 0-10, 10-20, 20-30, 30-40, 40-50, the Range = 50 - 0 = 50
+            </div>
+        </li>
+    </ul>
+
+    <h3>Quartile Deviation</h3>
+    <div class="datatype">For Both Raw and Grouped Data:</div>
+    <ul>
+        <li>
+            <div class="formula">Quartile Deviation (Q.D.) = (Q₃ - Q₁)/2</div>
+            <div class="explanation">
+                Also known as the semi-interquartile range, the quartile deviation is half the difference between the third quartile (Q₃) and the first quartile (Q₁).
+                <br><br>
+                It measures the spread of the middle 50% of the data and is not affected by extreme values.
+                <br><br>
+                Example: If Q₁ = 10 and Q₃ = 30, then Q.D. = (30 - 10)/2 = 10
+            </div>
+        </li>
+        <li>
+            <div class="formula">Coefficient of Q.D. = (Q₃ - Q₁) / (Q₃ + Q₁)</div>
+            <div class="explanation">
+                The coefficient of quartile deviation is a relative measure that allows comparison between different data sets.
+                <br><br>
+                Example: If Q₁ = 10 and Q₃ = 30, then Coefficient of Q.D. = (30 - 10) / (30 + 10) = 20/40 = 0.5
+            </div>
+        </li>
+    </ul>
+
+    <h3>Mean Deviation</h3>
+    <div class="datatype">For Raw/Ungrouped Data:</div>
+    <ul>
+        <li>
+            <div class="formula">About mean: M.D. = Sum of |value - mean| / Number of values</div>
+            <div class="explanation">
+                Formula: M.D. = Σ|x - x̄| / n
+                <br><br>
+                Where:
+                <br>• x is each value
+                <br>• x̄ is the arithmetic mean
+                <br>• |x - x̄| is the absolute deviation of each value from the mean
+                <br>• n is the number of values
+                <br><br>
+                Example: For data 4, 7, 11, 15, 18 with mean = 11:
+                <br>M.D. = (|4-11| + |7-11| + |11-11| + |15-11| + |18-11|) / 5
+                <br>= (7 + 4 + 0 + 4 + 7) / 5
+                <br>= 22 / 5 = 4.4
+            </div>
+        </li>
+        <li>
+            <div class="formula">About median: M.D. = Sum of |value - median| / Number of values</div>
+            <div class="explanation">
+                Formula: M.D. = Σ|x - M| / n
+                <br><br>
+                Where:
+                <br>• x is each value
+                <br>• M is the median
+                <br>• |x - M| is the absolute deviation of each value from the median
+                <br>• n is the number of values
+            </div>
+        </li>
+    </ul>
+
+    <div class="datatype">For Frequency Distribution (Grouped Data):</div>
+    <ul>
+        <li>
+            <div class="formula">About mean: M.D. = Sum of |value - mean| × frequency / Sum of frequencies</div>
+            <div class="explanation">
+                Formula: M.D. = Σ|x - x̄|f / Σf
+                <br><br>
+                Where:
+                <br>• x is the value (or class mid-point for grouped data)
+                <br>• x̄ is the arithmetic mean
+                <br>• f is the frequency
+                <br>• |x - x̄| is the absolute deviation of each value from the mean
+                <br>• Σf is the sum of all frequencies
+                <br><br>
+                Example: For grouped data with mean = 30:
+                <table>
+                    <tr><th>Class</th><th>Mid-point (x)</th><th>Frequency (f)</th><th>|x - 30|</th><th>f|x - 30|</th></tr>
+                    <tr><td>10-20</td><td>15</td><td>6</td><td>15</td><td>90</td></tr>
+                    <tr><td>20-30</td><td>25</td><td>10</td><td>5</td><td>50</td></tr>
+                    <tr><td>30-40</td><td>35</td><td>14</td><td>5</td><td>70</td></tr>
+                    <tr><td>40-50</td><td>45</td><td>8</td><td>15</td><td>120</td></tr>
+                    <tr><td>50-60</td><td>55</td><td>2</td><td>25</td><td>50</td></tr>
+                    <tr><td>Total</td><td></td><td>Σf = 40</td><td></td><td>Σf|x - 30| = 380</td></tr>
+                </table>
+                M.D. = 380/40 = 9.5
+            </div>
+        </li>
+        <li>
+            <div class="formula">About median: M.D. = Sum of |value - median| × frequency / Sum of frequencies</div>
+            <div class="explanation">
+                Formula: M.D. = Σ|x - M|f / Σf
+                <br><br>
+                Where:
+                <br>• x is the value (or class mid-point for grouped data)
+                <br>• M is the median
+                <br>• f is the frequency
+                <br>• |x - M| is the absolute deviation of each value from the median
+                <br>• Σf is the sum of all frequencies
+            </div>
+        </li>
+        <li>
+            <div class="formula">Coefficient of M.D. = M.D. / Central Value (Mean or Median)</div>
+            <div class="explanation">
+                The coefficient of mean deviation is a relative measure that allows comparison between different data sets.
+                <br><br>
+                Example: If Mean = 30 and M.D. about mean = 9.5, then Coefficient of M.D. = 9.5/30 = 0.317
+            </div>
+        </li>
+    </ul>
+
+    <h3>Standard Deviation</h3>
+    <div class="datatype">For Raw/Ungrouped Data:</div>
+    <ul>
+        <li>
+            <div class="formula">SD = Square root of [Sum of (value - mean)² / Number of values]</div>
+            <div class="explanation">
+                Formula: SD = √[Σ(x - x̄)² / n]
+                <br><br>
+                Where:
+                <br>• x is each value
+                <br>• x̄ is the arithmetic mean
+                <br>• n is the number of values
+                <br>• (x - x̄)² is the squared deviation of each value from the mean
+                <br><br>
+                Example: For data 2, 4, 6, 8, 10 with mean = 6, the SD = √[((-4)² + (-2)² + 0² + 2² + 4²) / 5] = √[40/5] = √8 = 2.83
+            </div>
+        </li>
+        <li>
+            <div class="formula">SD using shortcut method: SD = Square root of [Sum of squares / n - (Mean)²]</div>
+            <div class="explanation">
+                Formula: SD = √[Σx² / n - (Σx / n)²]
+                <br><br>
+                Where:
+                <br>• x is each value
+                <br>• n is the number of values
+                <br>• Σx² is the sum of squares of all values
+                <br>• (Σx / n)² is the square of the mean
+                <br><br>
+                This method is computationally easier than the direct method.
+                <br><br>
+                Example: For data 2, 4, 6, 8, 10:
+                <br>• Σx = 30, Σx² = 2² + 4² + 6² + 8² + 10² = 4 + 16 + 36 + 64 + 100 = 220
+                <br>• Mean = 30/5 = 6
+                <br>• SD = √[220/5 - 6²] = √[44 - 36] = √8 = 2.83
+            </div>
+        </li>
+    </ul>
+
+    <div class="datatype">For Frequency Distribution (Grouped Data):</div>
+    <ul>
+        <li>
+            <div class="formula">SD = Square root of [Sum of (value - mean)² × frequency / Sum of frequencies]</div>
+            <div class="explanation">
+                Formula: SD = √[Σ(x - x̄)²f / Σf]
+                <br><br>
+                Where:
+                <br>• x is the value (or class mid-point for grouped data)
+                <br>• x̄ is the arithmetic mean
+                <br>• f is the frequency
+                <br>• (x - x̄)² is the squared deviation of each value from the mean
+                <br>• Σf is the sum of all frequencies
+            </div>
+        </li>
+        <li>
+            <div class="formula">SD using shortcut method: SD = Square root of [Sum of (frequency × square of value) / Sum of frequencies - (Mean)²]</div>
+            <div class="explanation">
+                Formula: SD = √[Σfx² / Σf - (Σfx / Σf)²]
+                <br><br>
+                Where:
+                <br>• x is the value (or class mid-point for grouped data)
+                <br>• f is the frequency
+                <br>• Σfx² is the sum of frequency times square of value
+                <br>• (Σfx / Σf)² is the square of the mean
+                <br><br>
+                Example: For grouped data:
+                <table>
+                    <tr><th>Class</th><th>Mid-point (x)</th><th>Frequency (f)</th><th>fx</th><th>fx²</th></tr>
+                    <tr><td>10-20</td><td>15</td><td>6</td><td>90</td><td>1,350</td></tr>
+                    <tr><td>20-30</td><td>25</td><td>10</td><td>250</td><td>6,250</td></tr>
+                    <tr><td>30-40</td><td>35</td><td>14</td><td>490</td><td>17,150</td></tr>
+                    <tr><td>40-50</td><td>45</td><td>8</td><td>360</td><td>16,200</td></tr>
+                    <tr><td>50-60</td><td>55</td><td>2</td><td>110</td><td>6,050</td></tr>
+                    <tr><td>Total</td><td></td><td>Σf = 40</td><td>Σfx = 1,300</td><td>Σfx² = 47,000</td></tr>
+                </table>
+                Mean = 1,300/40 = 32.5
+                <br>SD = √[47,000/40 - 32.5²] = √[1,175 - 1,056.25] = √118.75 = 10.9
+            </div>
+        </li>
+        <li>
+            <div class="formula">SD using step deviation method: SD = h × Square root of [Sum of (frequency × square of step deviation) / Sum of frequencies - (Sum of frequency × step deviation / Sum of frequencies)²]</div>
+            <div class="explanation">
+                Formula: SD = h × √[Σfu² / Σf - (Σfu / Σf)²]
+                <br><br>
+                Where:
+                <br>• h is the class width
+                <br>• u = (x - A)/h is the step deviation
+                <br>• A is an assumed mean
+                <br>• f is the frequency
+                <br><br>
+                This method simplifies calculations by working with smaller numbers.
+            </div>
+        </li>
+        <li>
+            <div class="formula">Variance = SD²</div>
+            <div class="explanation">
+                Variance is the square of the standard deviation.
+                <br><br>
+                It represents the average of the squared deviations from the mean.
+            </div>
+        </li>
+        <li>
+            <div class="formula">Coefficient of Variation (CV) = (Standard Deviation / Mean) × 100</div>
+            <div class="explanation">
+                Formula: CV = (SD / x̄) × 100
+                <br><br>
+                The coefficient of variation is a relative measure of dispersion expressed as a percentage.
+                <br><br>
+                It allows comparison of dispersion between different data sets even when they have different units or scales.
+                <br><br>
+                Example: If Mean = 32.5 and SD = 10.9, then CV = (10.9/32.5) × 100 = 33.5%
+            </div>
+        </li>
+    </ul>
+
+    <h2>Permutations and Combinations</h2>
+
+    <h3>Factorial</h3>
+    <ul>
+        <li>
+            <div class="formula">n! = n × (n-1) × (n-2) × ... × 3 × 2 × 1</div>
+            <div class="explanation">
+                The factorial of a non-negative integer n, denoted by n!, is the product of all positive integers less than or equal to n.
+                <br><br>
+                Examples:
+                <br>• 0! = 1 (by definition)
+                <br>• 1! = 1
+                <br>• 2! = 2 × 1 = 2
+                <br>• 3! = 3 × 2 × 1 = 6
+                <br>• 4! = 4 × 3 × 2 × 1 = 24
+                <br>• 5! = 5 × 4 × 3 × 2 × 1 = 120
+            </div>
+        </li>
+        <li>
+            <div class="formula">0! = 1</div>
+            <div class="explanation">
+                By definition, the factorial of 0 is 1.
+                <br><br>
+                This definition is necessary to make certain formulas in combinatorics and probability theory work correctly.
+            </div>
+        </li>
+    </ul>
+
+    <h3>Permutation</h3>
+    <ul>
+        <li>
+            <div class="formula"><sup>n</sup>P<sub>r</sub> = n! / (n-r)!</div>
+            <div class="explanation">
+                The number of ways to arrange r objects from a set of n distinct objects where order matters.
+                <br><br>
+                <sup>n</sup>P<sub>r</sub> represents the number of permutations of n things taken r at a time.
+                <br><br>
+                Example: <sup>5</sup>P<sub>3</sub> = 5! / (5-3)! = 5! / 2! = 120 / 2 = 60
+                <br><br>
+                This means there are 60 different ways to arrange 3 objects selected from 5 distinct objects.
+            </div>
+        </li>
+        <li>
+            <div class="formula">Number of permutations of n distinct objects taken all at a time = n!</div>
+            <div class="explanation">
+                When selecting all n objects from a set of n distinct objects, the number of possible arrangements is n!
+                <br><br>
+                Example: The number of ways to arrange 3 distinct objects (say A, B, C) is 3! = 6
+                <br>These are: ABC, ACB, BAC, BCA, CAB, CBA
+            </div>
+        </li>
+    </ul>
+
+    <h3>Permutation with Repetition</h3>
+    <ul>
+        <li>
+            <div class="formula">If n objects have frequencies a₁, a₂, ..., a<sub>k</sub> such that a₁ + a₂ + ... + a<sub>k</sub> = n:<br>
+            Number of permutations = n! / (a₁! × a₂! × ... × a<sub>k</sub>!)</div>
+            <div class="explanation">
+                This formula gives the number of distinct permutations when some objects are repeated.
+                <br><br>
+                Where:
+                <br>• n is the total number of objects
+                <br>• a₁, a₂, ..., a<sub>k</sub> are the frequencies (number of times each distinct object appears)
+                <br><br>
+                Example: The number of distinct permutations of the letters in "MISSISSIPPI" is:
+                <br>• Total number of letters: 11
+                <br>• M appears 1 time, I appears 4 times, S appears 4 times, P appears 2 times
+                <br>• Number of permutations = 11! / (1! × 4! × 4! × 2!) = 39,916,800 / 384 = 103,950
+            </div>
+        </li>
+    </ul>
+
+    <h3>Combination</h3>
+    <ul>
+        <li>
+            <div class="formula"><sup>n</sup>C<sub>r</sub> = n! / [r! × (n-r)!]</div>
+            <div class="explanation">
+                The number of ways to select r objects from a set of n distinct objects where order does not matter.
+                <br><br>
+                <sup>n</sup>C<sub>r</sub> represents the number of combinations of n things taken r at a time.
+                <br><br>
+                Example: <sup>5</sup>C<sub>3</sub> = 5! / [3! × (5-3)!] = 5! / (3! × 2!) = 120 / (6 × 2) = 10
+                <br><br>
+                This means there are 10 different ways to select 3 objects from 5 distinct objects when the order doesn't matter.
+            </div>
+        </li>
+        <li>
+            <div class="formula"><sup>n</sup>C<sub>r</sub> = <sup>n</sup>C<sub>n-r</sub></div>
+            <div class="explanation">
+                This property states that selecting r objects from n objects is the same as selecting (n-r) objects from n objects.
+                <br><br>
+                Example: <sup>5</sup>C<sub>3</sub> = <sup>5</sup>C<sub>2</sub> = 10
+                <br><br>
+                This makes sense because when you select r objects, you're effectively also selecting which (n-r) objects to leave out.
+            </div>
+        </li>
+    </ul>
+
+    <h3>Combination Formulas</h3>
+    <ul>
+        <li>
+            <div class="formula"><sup>n</sup>C<sub>0</sub> = <sup>n</sup>C<sub>n</sub> = 1</div>
+            <div class="explanation">
+                <sup>n</sup>C<sub>0</sub> = 1 because there is only one way to select 0 objects from n objects (by selecting none).
+                <br><br>
+                <sup>n</sup>C<sub>n</sub> = 1 because there is only one way to select all n objects from n objects.
+            </div>
+        </li>
+        <li>
+            <div class="formula"><sup>n</sup>C<sub>r</sub> + <sup>n</sup>C<sub>r-1</sub> = <sup>n+1</sup>C<sub>r</sub></div>
+            <div class="explanation">
+                This property is known as Pascal's rule or the addition formula for combinations.
+                <br><br>
+                It states that the number of ways to select r objects from n+1 objects equals the number of ways to select r objects from n objects plus the number of ways to select r-1 objects from n objects.
+                <br><br>
+                This formula is used to construct Pascal's triangle.
+            </div>
+        </li>
+        <li>
+            <div class="formula"><sup>n</sup>C<sub>0</sub> + <sup>n</sup>C<sub>1</sub> + <sup>n</sup>C<sub>2</sub> + ... + <sup>n</sup>C<sub>n</sub> = 2<sup>n</sup></div>
+            <div class="explanation">
+                This formula gives the sum of all combinations from a set of n elements.
+                <br><br>
+                It equals 2<sup>n</sup>, which is the total number of possible subsets of a set with n elements (including the empty set and the full set).
+                <br><br>
+                Example: For n = 3, <sup>3</sup>C<sub>0</sub> + <sup>3</sup>C<sub>1</sub> + <sup>3</sup>C<sub>2</sub> + <sup>3</sup>C<sub>3</sub> = 1 + 3 + 3 + 1 = 8 = 2<sup>3</sup>
+            </div>
+        </li>
+    </ul>
+
+    <h2>Probability</h2>
+
+    <h3>Basic Probability</h3>
+    <ul>
+        <li>
+            <div class="formula">P(E) = Number of favorable outcomes / Total number of possible outcomes</div>
+            <div class="explanation">
+                The probability of an event E is the ratio of favorable outcomes to the total number of possible outcomes when all outcomes are equally likely.
+                <br><br>
+                P(E) is always between 0 and 1 (inclusive):
+                <br>• P(E) = 0 means the event is impossible
+                <br>• P(E) = 1 means the event is certain
+                <br><br>
+                Example: When rolling a fair die, the probability of getting a 3 is 1/6 because there is 1 favorable outcome out of 6 possible outcomes.
+            </div>
+        </li>
+    </ul>
+
+    <h3>Operations on Events</h3>
+    <ul>
+        <li>
+            <div class="formula">Complementary Event: P(A') = 1 - P(A)</div>
+            <div class="explanation">
+                The complement of event A, denoted A', consists of all outcomes that are not in A.
+                <br><br>
+                The sum of the probabilities of an event and its complement equals 1.
+                <br><br>
+                Example: If the probability of getting a head when tossing a fair coin is P(H) = 0.5, then the probability of not getting a head is P(H') = 1 - 0.5 = 0.5
+            </div>
+        </li>
+        <li>
+            <div class="formula">Union of Events: P(A ∪ B) = P(A) + P(B) - P(A ∩ B)</div>
+            <div class="explanation">
+                The union of events A and B, denoted A ∪ B, is the event that either A or B or both occur.
+                <br><br>
+                The formula subtracts P(A ∩ B) to avoid counting the intersection twice.
+                <br><br>
+                Example: If P(A) = 0.5, P(B) = 0.4, and P(A ∩ B) = 0.2, then P(A ∪ B) = 0.5 + 0.4 - 0.2 = 0.7
+            </div>
+        </li>
+        <li>
+            <div class="formula">Union of Mutually Exclusive Events: P(A ∪ B) = P(A) + P(B)</div>
+            <div class="explanation">
+                When events A and B are mutually exclusive (cannot occur simultaneously), their intersection is empty (P(A ∩ B) = 0).
+                <br><br>
+                In this case, the probability of their union is simply the sum of their individual probabilities.
+                <br><br>
+                Example: When rolling a die, the events "getting an even number" (A = {2,4,6}) and "getting a 3" (B = {3}) are mutually exclusive. P(A ∪ B) = P(A) + P(B) = 3/6 + 1/6 = 4/6 = 2/3
+            </div>
+        </li>
+    </ul>
+
+    <h3>Conditional Probability</h3>
+    <ul>
+        <li>
+            <div class="formula">P(B|A) = P(A ∩ B) / P(A)</div>
+            <div class="explanation">
+                The conditional probability P(B|A) is the probability of event B occurring given that event A has occurred.
+                <br><br>
+                Where:
+                <br>• P(A ∩ B) is the probability of both events A and B occurring
+                <br>• P(A) is the probability of event A occurring
+                <br>• P(A) must be greater than 0
+                <br><br>
+                Example: In a standard deck of 52 cards, if A is "drawing a king" and B is "drawing a heart", then:
+                <br>• P(A) = 4/52 = 1/13
+                <br>• P(A ∩ B) = 1/52 (one king of hearts)
+                <br>• P(B|A) = (1/52) / (4/52) = 1/4
+                <br><br>
+                So, given that you've drawn a king, the probability it's a heart is 1/4.
+            </div>
+        </li>
+    </ul>
+
+    <h3>Independent Events</h3>
+    <ul>
+        <li>
+            <div class="formula">Events A and B are independent if P(A ∩ B) = P(A) × P(B)</div>
+            <div class="explanation">
+                Two events are independent if the occurrence of one does not affect the probability of the other.
+                <br><br>
+                This is equivalent to P(B|A) = P(B) or P(A|B) = P(A).
+                <br><br>
+                Example: When tossing two fair coins, the events "first coin shows heads" and "second coin shows heads" are independent. The probability of both showing heads is P(H₁ ∩ H₂) = P(H₁) × P(H₂) = 0.5 × 0.5 = 0.25
+            </div>
+        </li>
+        <li>
+            <div class="formula">For independent events: P(B|A) = P(B) and P(A|B) = P(A)</div>
+            <div class="explanation">
+                If events A and B are independent, then the conditional probability of B given A equals the unconditional probability of B, and vice versa.
+                <br><br>
+                This means that the knowledge that one event has occurred does not change the probability of the other event.
+            </div>
+        </li>
+    </ul>
+
+    <h3>Bayes' Theorem</h3>
+    <ul>
+        <li>
+            <div class="formula">P(A<sub>i</sub>|B) = [P(B|A<sub>i</sub>) × P(A<sub>i</sub>)] / [P(B|A<sub>1</sub>) × P(A<sub>1</sub>) + P(B|A<sub>2</sub>) × P(A<sub>2</sub>) + ... + P(B|A<sub>n</sub>) × P(A<sub>n</sub>)]</div>
+            <div class="explanation">
+                Bayes' theorem allows us to update probabilities based on new evidence.
+                <br><br>
+                Where:
+                <br>• A<sub>1</sub>, A<sub>2</sub>, ..., A<sub>n</sub> are mutually exclusive and exhaustive events
+                <br>• P(A<sub>i</sub>) is the prior probability of event A<sub>i</sub>
+                <br>• P(B|A<sub>i</sub>) is the conditional probability of event B given that A<sub>i</sub> has occurred
+                <br>• P(A<sub>i</sub>|B) is the posterior probability of event A<sub>i</sub> given that B has occurred
+                <br><br>
+                The denominator P(B|A<sub>1</sub>) × P(A<sub>1</sub>) + P(B|A<sub>2</sub>) × P(A<sub>2</sub>) + ... + P(B|A<sub>n</sub>) × P(A<sub>n</sub>) equals P(B) by the law of total probability.
+                <br><br>
+                Example: In medical testing, if:
+                <br>• P(Disease) = 0.01 (1% of the population has the disease)
+                <br>• P(Positive|Disease) = 0.95 (95% sensitivity - test detects disease when present)
+                <br>• P(Positive|No Disease) = 0.05 (5% false positive rate)
+                <br><br>
+                The probability of actually having the disease given a positive test result is:
+                <br>P(Disease|Positive) = [0.95 × 0.01] / [0.95 × 0.01 + 0.05 × 0.99] = 0.0095 / 0.0095 + 0.0495 = 0.0095 / 0.059 = 0.16 or 16%
+            </div>
+        </li>
+    </ul>
+
+    <h3>Total Probability Theorem</h3>
+    <ul>
+        <li>
+            <div class="formula">If A₁, A₂, ..., A<sub>n</sub> are mutually exclusive and exhaustive events, then for any event B:<br>
+            P(B) = P(A₁) × P(B|A₁) + P(A₂) × P(B|A₂) + ... + P(A<sub>n</sub>) × P(B|A<sub>n</sub>)</div>
+            <div class="explanation">
+                The theorem of total probability allows us to find the probability of an event B by considering all the ways B can occur.
+                <br><br>
+                Where:
+                <br>• A₁, A₂, ..., A<sub>n</sub> form a partition of the sample space (they are mutually exclusive and their union covers all possibilities)
+                <br>• P(A<sub>i</sub>) is the probability of event A<sub>i</sub>
+                <br>• P(B|A<sub>i</sub>) is the conditional probability of event B given that A<sub>i</sub> has occurred
+                <br><br>
+                Example: If a box contains 3 red and 2 blue balls, and another box contains 2 red and 5 blue balls, and a box is selected at random:
+                <br>• A₁ = "first box is selected", P(A₁) = 0.5
+                <br>• A₂ = "second box is selected", P(A₂) = 0.5
+                <br>• B = "a red ball is drawn"
+                <br>• P(B|A₁) = 3/5 = 0.6
+                <br>• P(B|A₂) = 2/7 ≈ 0.286
+                <br>• P(B) = 0.5 × 0.6 + 0.5 × 0.286 = 0.3 + 0.143 = 0.443
+            </div>
+        </li>
+    </ul>
+</body>
+</html>

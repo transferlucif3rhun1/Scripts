@@ -1,0 +1,179 @@
+[
+  {
+    "status": "success",
+    "target_cookies": {
+      "eps_sid": {
+        "domain": ".ticketmaster.com",
+        "expiry": 1750775165,
+        "httpOnly": true,
+        "name": "eps_sid",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": false,
+        "value": "dfdc4f5f7beaf6b013b2b0b4bd94355c85c60790"
+      },
+      "tmpt": {
+        "domain": ".ticketmaster.com",
+        "expiry": 1748186769,
+        "httpOnly": false,
+        "name": "tmpt",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": false,
+        "value": "0:a070e30601000000:1748183169:f0271edb:e05535139904208addbe7234df876593:70325974a300cadb4a776837bec6655d886acb821552335084dfbdc80219c6d9"
+      }
+    },
+    "all_cookies": [
+      {
+        "domain": ".ticketmaster.com",
+        "expiry": 1782743174,
+        "httpOnly": false,
+        "name": "_ga_C1T806G4DF",
+        "path": "/",
+        "sameSite": "None",
+        "secure": true,
+        "value": "GS2.1.s1748183174$o1$g0$t1748183174$j60$l0$h0$dmXCxbUvIHCYFkn7qPd2cHSoHExy_WsE17Q"
+      },
+      {
+        "domain": ".ticketmaster.com",
+        "expiry": 1755959171,
+        "httpOnly": false,
+        "name": "_gcl_au",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": false,
+        "value": "1.1.1627098667.1748183172"
+      },
+      {
+        "domain": ".ticketmaster.com",
+        "expiry": 1782743174,
+        "httpOnly": false,
+        "name": "_ga_H1KKSGW33X",
+        "path": "/",
+        "sameSite": "None",
+        "secure": true,
+        "value": "GS2.1.s1748183174$o1$g0$t1748183174$j60$l0$h0$dNoMwsaAcJbkp6uJTeKwVYdGOtkEWpcHilQ"
+      },
+      {
+        "domain": ".auth.ticketmaster.com",
+        "httpOnly": true,
+        "name": "TMAUO",
+        "path": "/",
+        "sameSite": "None",
+        "secure": true,
+        "value": "east_rbQGz9IaRZyu6rCxdelaliHsUvz2oDrXZOv5vsVDksk="
+      },
+      {
+        "domain": ".ticketmaster.com",
+        "expiry": 1782743174,
+        "httpOnly": false,
+        "name": "_ga",
+        "path": "/",
+        "sameSite": "None",
+        "secure": true,
+        "value": "GA1.1.1583310871.1748183174"
+      },
+      {
+        "domain": ".ticketmaster.com",
+        "expiry": 1748186770,
+        "httpOnly": false,
+        "name": "tmpt",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": false,
+        "value": "0:24a1c30601000000:1748183170:ecaa974e:e05535139904208addbe7234df876593:49f057b6f581db01d7b485973802db3c9066472e8bb4492d2b8949c66a137e65"
+      },
+      {
+        "domain": ".auth.ticketmaster.com",
+        "expiry": 1782743168,
+        "httpOnly": true,
+        "name": "ma.BID",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": true,
+        "value": "bvQv08f9Y36SYqmU-Y9RiF-Zeb_aAeMuhvO-U-TKtRUp7W5_N82FHg_QHhMInyGxLbVOFitfF80GypQ"
+      },
+      {
+        "domain": ".ticketmaster.com",
+        "httpOnly": true,
+        "name": "TMUO",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": true,
+        "value": "east_rbQGz9IaRZyu6rCxdelaliHsUvz2oDrXZOv5vsVDksk="
+      },
+      {
+        "domain": ".auth.ticketmaster.com",
+        "httpOnly": true,
+        "name": "ma.SID",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": true,
+        "value": "uNEH6W0R93Kqi1Y7TQqlEz5U-pC32cDF9wOcRuOqrX7CJxIsx6C1u39XpFDDpw9OkKbsR1PPPgDieR7KnWhN"
+      },
+      {
+        "domain": ".auth.ticketmaster.com",
+        "expiry": 1779719168,
+        "httpOnly": true,
+        "name": "ma.LANGUAGE",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": true,
+        "value": "en-us"
+      },
+      {
+        "domain": ".ticketmaster.com",
+        "expiry": 1750775165,
+        "httpOnly": true,
+        "name": "eps_sid",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": false,
+        "value": "dfdc4f5f7beaf6b013b2b0b4bd94355c85c60790"
+      },
+      {
+        "domain": ".ticketmaster.com",
+        "httpOnly": true,
+        "name": "SID",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": true,
+        "value": "4I2B8O1eMBDWooOyugS7aWbfaQSkJ9a5V7v0tNnXrSfCz1ZPb2BkQkZYxXNUmpNErsvJOvL7zH8n3vFk0yR1"
+      },
+      {
+        "domain": ".ticketmaster.com",
+        "expiry": 1779719172,
+        "httpOnly": false,
+        "name": "ndcd",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": false,
+        "value": "wc1.1.w-729460.1.2.Sza5NZggizHMl_isEDq6pw%252C%252C.AxNBERsjqnOhLEGck1jf7JTpaaV_xcvyyau4JBTIzgrzfRHm3t19cE0oeNIHtXRsPsbe7WKwWIx6pBvd8BCC68yHpnp9xG8YNcmNXFiZftfhRT0-1Oe1F_gdO2mewgdM4sNZFWyZKTBCy1SO-D9kb8V6gCkciNUMr5XmQVtWPV8somZmqvlh8gBMOsRzum8l"
+      },
+      {
+        "domain": ".ticketmaster.com",
+        "expiry": 1782743163,
+        "httpOnly": true,
+        "name": "BID",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": true,
+        "value": "jkOQUF6mthvpgw9NXAlBxiGIxE9aACw6yOnyj8wpyxQD5YA3JerKK1IIiTSR589WzYhYGyvWAf8FKpQ"
+      },
+      {
+        "domain": ".ticketmaster.com",
+        "expiry": 1779719163,
+        "httpOnly": false,
+        "name": "LANGUAGE",
+        "path": "/",
+        "sameSite": "Lax",
+        "secure": true,
+        "value": "en-us"
+      }
+    ],
+    "final_url": "https://auth.ticketmaster.com/as/authorization.oauth2?client_id=8bf7204a7e97.web.ticketmaster.us&response_type=code&scope=openid%20profile%20phone%20email%20tm&redirect_uri=https://identity.ticketmaster.com/exchange&visualPresets=tm&lang=en-us&placementId=mytmlogin&hideLeftPanel=false&integratorId=prd1741.iccp&intSiteToken=tm-us&deviceId=iHOpUcUd50lHRkJJQktJSEtGSEtKNNHSFOVPbw&disableAutoOptIn=false",
+    "total_cookies": 15,
+    "hunt_duration": 2.00911808013916,
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  }
+]

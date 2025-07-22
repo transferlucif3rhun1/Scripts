@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "express": "^5.1.0",
+    "recaptcha-v3": "^1.11.3"
+  }
+}

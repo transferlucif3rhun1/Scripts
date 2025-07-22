@@ -1,0 +1,171 @@
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+	"sync"
+	"time"
+	"syscall"
+	"unsafe"
+)
+
+var (
+	batFilePath1 string
+	batFilePath2 string
+	batFilePath3 string
+)
+
+const (
+	url1            = "http://localhost:8050/generateHeaders/Auth"
+	url2            = "http://localhost:3030/releaseNumber?number="
+	url3            = "http://localhost:8010/get-number"
+	batFileName1    = "serverRouting.bat"
+	batFileName2    = "blockNumber.bat"
+	batFileName3    = "getNumber.bat"
+	checkInterval   = 1 * time.Minute
+	clearScreenLine = 10000
+)
+
+type urlStatus struct {
+	lastStatusCode int
+	mu             sync.Mutex
+}
+
+var (
+	urlStatuses = map[string]*urlStatus{
+		"url1": {lastStatusCode: -1},
+		"url2": {lastStatusCode: -1},
+		"url3": {lastStatusCode: -1},
+	}
+)
+
+func main() {
+	cwd, err := os.Getwd()
+	if err != nil {
+		logError("Failed to get current working directory: " + err.Error())
+		return
+	}
+
+	batFilePath1 = filepath.Join(cwd, batFileName1)
+	batFilePath2 = filepath.Join(cwd, batFileName2)
+	batFilePath3 = filepath.Join(cwd, batFileName3)
+
+	lineCounter := 0
+	for {
+		lineCounter++
+		fmt.Println("Starting URL checks...")
+
+		var wg sync.WaitGroup
+		wg.Add(3)
+
+		go func() {
+			defer wg.Done()
+			checkAndRunURL("url1", url1, 405, batFilePath1)
+		}()
+
+		go func() {
+			defer wg.Done()
+			checkAndRunURL("url2", url2, 404, batFilePath2)
+		}()
+
+		go func() {
+			defer wg.Done()
+			checkAndRunURL("url3", url3, 405, batFilePath3)
+		}()
+
+		wg.Wait()
+
+		if lineCounter >= clearScreenLine {
+			clearScreen()
+			lineCounter = 0
+		}
+		time.Sleep(checkInterval)
+	}
+}
+
+func checkAndRunURL(name, url string, expectedStatusCode int, batFilePath string) {
+	fmt.Printf("Checking %s...\n", name)
+	statusCode, err := checkURL(url)
+	if err != nil {
+		runBatchFileAndWait(name, batFilePath)
+		return
+	}
+
+	urlStatuses[name].mu.Lock()
+	defer urlStatuses[name].mu.Unlock()
+
+	if statusCode == expectedStatusCode {
+		fmt.Printf("Server at %s returned expected status: %d\n", name, statusCode)
+	} else {
+		if urlStatuses[name].lastStatusCode != statusCode {
+			runBatchFileAndWait(name, batFilePath)
+		}
+	}
+	urlStatuses[name].lastStatusCode = statusCode
+}
+
+func checkURL(url string) (int, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return 0, err
+	}
+	defer resp.Body.Close()
+	return resp.StatusCode, nil
+}
+
+func getShortPathName(longPath string) (string, error) {
+	buf := make([]uint16, syscall.MAX_LONG_PATH)
+	r, _, err := syscall.NewLazyDLL("kernel32.dll").NewProc("GetShortPathNameW").Call(
+		uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(longPath))),
+		uintptr(unsafe.Pointer(&buf[0])),
+		uintptr(len(buf)),
+	)
+	if r == 0 {
+		return "", err
+	}
+	return syscall.UTF16ToString(buf), nil
+}
+
+func runBatchFileAndWait(name, batFilePath string) {
+	fmt.Printf("Attempting to run batch file for %s: %s\n", name, batFilePath)
+	if _, err := os.Stat(batFilePath); os.IsNotExist(err) {
+		logError(fmt.Sprintf("Batch file for %s does not exist: %s", name, batFilePath))
+		return
+	}
+
+	shortPath, err := getShortPathName(batFilePath)
+	if err != nil {
+		logError(fmt.Sprintf("Failed to get short path name for batch file (%s): %s, Error: %s", name, batFilePath, err.Error()))
+		return
+	}
+
+	cmd := exec.Command("cmd", "/c", shortPath)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		logError(fmt.Sprintf("Failed to execute the batch file for %s. Error: %s", name, err.Error()))
+	} else {
+		fmt.Printf("Batch file for %s executed successfully. Output:\n%s\n", name, string(output))
+	}
+}
+
+func clearScreen() {
+	cmd := exec.Command("cmd", "/c", "cls")
+	cmd.Run()
+}
+
+func logError(message string) {
+	fmt.Println(message)
+}
+
+// sanitizeError removes the URL from the error message
+func sanitizeError(err error) string {
+	parts := strings.Split(err.Error(), " ")
+	if len(parts) > 1 {
+		return strings.Join(parts[1:], " ")
+	}
+	return err.Error()
+}

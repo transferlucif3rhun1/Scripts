@@ -1,0 +1,11 @@
+https://github.com/xvertile/akamai-bmp-generator.git
+
+PowerShell
+cd <space> server
+
+go run main.go
+
+
+http://127.0.0.1:1337/akamai/bmp
+
+http://localhost:1337/akamai/bmp
